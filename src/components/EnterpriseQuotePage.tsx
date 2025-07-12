@@ -63,8 +63,6 @@ const EnterpriseQuotePage: React.FC = () => {
   const additionalServices = [
     { id: 'delivery', name: 'Entrega Programada', description: 'Entregas en horarios específicos' },
     { id: 'emergency', name: 'Servicio de Emergencia', description: 'Entregas urgentes en 24hrs' },
-    { id: 'storage', name: 'Almacenamiento', description: 'Bodegaje de productos en sus instalaciones' },
-    { id: 'training', name: 'Capacitación', description: 'Entrenamiento en uso de equipos' }
   ];
 
   const employeeRanges = [
