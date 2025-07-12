@@ -15,7 +15,7 @@ import {
 
 const AboutSection: React.FC = () => {
   const stats = [
-    { number: '15+', label: 'Años de Experiencia', icon: Award },
+    { number: '2+', label: 'Años de Experiencia', icon: Award },
     { number: '500+', label: 'Familias Satisfechas', icon: Users },
     { number: '100%', label: 'Agua Pura', icon: Droplets },
     { number: '24/7', label: 'Servicio al Cliente', icon: Heart }
@@ -41,29 +41,24 @@ const AboutSection: React.FC = () => {
 
   const timeline = [
     {
-      year: '2008',
+      year: '2022',
       title: 'Fundación',
       description: 'Iniciamos como una pequeña empresa familiar en Los Ángeles, con la visión de llevar agua pura a cada hogar.'
     },
     {
-      year: '2012',
-      title: 'Expansión Regional',
-      description: 'Ampliamos nuestro servicio a toda la región del Biobío, estableciendo nuevas rutas de distribución.'
-    },
-    {
-      year: '2016',
-      title: 'Certificaciones',
-      description: 'Obtuvimos certificaciones de calidad y comenzamos nuestro programa de sustentabilidad ambiental.'
-    },
-    {
-      year: '2020',
-      title: 'Innovación Digital',
-      description: 'Lanzamos nuestra plataforma digital para facilitar pedidos y mejorar la experiencia del cliente.'
+      year: '2023',
+      title: 'Crecimiento Acelerado',
+      description: 'Expandimos nuestro servicio y establecimos nuevas rutas de distribución en la región del Biobío.'
     },
     {
       year: '2024',
-      title: 'Liderazgo Regional',
-      description: 'Nos consolidamos como líderes en distribución de agua purificada en el sur de Chile.'
+      title: 'Innovación y Calidad',
+      description: 'Implementamos nuevas tecnologías de purificación y lanzamos nuestra plataforma digital.'
+    },
+    {
+      year: '2025',
+      title: 'Consolidación',
+      description: 'Nos consolidamos como una empresa líder en distribución de agua purificada en el sur de Chile.'
     }
   ];
 
@@ -101,7 +96,7 @@ const AboutSection: React.FC = () => {
             <h3 className="text-3xl font-bold text-gray-900 mb-6">Nuestra Historia</h3>
             <div className="space-y-4 text-gray-700 leading-relaxed">
               <p>
-                Aguas Reko nació en 2008 en Los Ángeles, región del Biobío, con una misión clara: 
+                Aguas Reko nació en 2022 en Los Ángeles, región del Biobío, con una misión clara: 
                 llevar agua de la más alta calidad a cada hogar y empresa de nuestra región.
               </p>
               <p>
@@ -110,7 +105,7 @@ const AboutSection: React.FC = () => {
                 la pureza natural de nuestra tierra.
               </p>
               <p>
-                Hoy, después de más de 15 años, nos hemos convertido en líderes regionales en distribución 
+                Hoy, después de más de 2 años, nos hemos convertido en líderes regionales en distribución 
                 de agua purificada, manteniendo siempre nuestros valores familiares y nuestro compromiso 
                 con la excelencia.
               </p>
