@@ -15,6 +15,7 @@ import CartSidebar from './components/CartSidebar';
 import PaymentRouter from './components/PaymentRouter';
 import ConfigurationRouter from './components/ConfigurationRouter';
 import EnterpriseQuoteRouter from './components/EnterpriseQuoteRouter';
+import EnterpriseRouter from './components/EnterpriseRouter';
 
 function App() {
   // Check if we're on the payment page
@@ -25,6 +26,9 @@ function App() {
 
   // Check if we're on the enterprise quote page
   const isEnterpriseQuotePage = window.location.pathname === '/cotizacion-empresas';
+
+  // Check if we're on the enterprise page
+  const isEnterprisePage = window.location.pathname === '/empresas';
 
   if (isPaymentPage) {
     return (
@@ -46,6 +50,14 @@ function App() {
     return (
       <AuthProvider>
         <EnterpriseQuoteRouter />
+      </AuthProvider>
+    );
+  }
+
+  if (isEnterprisePage) {
+    return (
+      <AuthProvider>
+        <EnterpriseRouter />
       </AuthProvider>
     );
   }
