@@ -72,7 +72,7 @@ const Header: React.FC = () => {
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled 
-            ? 'bg-white/80 backdrop-blur-md shadow-lg' 
+            ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg dark:shadow-gray-900/50' 
             : 'bg-transparent'
         }`}
         initial={{ y: -100 }}
@@ -121,8 +121,8 @@ const Header: React.FC = () => {
               <motion.div
                 className={`hidden md:flex items-center space-x-2 px-3 py-2 rounded-full transition-all duration-300 ${
                   isScrolled 
-                    ? 'bg-blue-50 text-blue-700' 
-                    : 'bg-white/10 backdrop-blur-sm text-white border border-white/20'
+                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' 
+                    : 'bg-white/10 dark:bg-gray-800/30 backdrop-blur-sm text-white border border-white/20 dark:border-gray-600/30'
                 }`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -149,7 +149,7 @@ const Header: React.FC = () => {
                         onClick={() => openAuthModal('login')}
                         className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
                           isScrolled
-                            ? 'text-gray-700 hover:bg-gray-100'
+                            ? 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
                             : 'text-white hover:bg-white/10'
                         }`}
                         whileHover={{ scale: 1.05 }}

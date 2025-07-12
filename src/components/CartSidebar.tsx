@@ -163,14 +163,14 @@ const CartSidebar: React.FC = () => {
             {/* Footer */}
             {items.length > 0 && (
               <motion.div
-                className="p-6 border-t bg-gradient-to-r from-gray-50 to-blue-50"
+                className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-xl font-bold text-gray-900">Total:</span>
-                  <span className="text-2xl font-bold text-blue-600">{formatPrice(total)}</span>
+                  <span className="text-xl font-bold text-gray-900 dark:text-white">Total:</span>
+                  <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{formatPrice(total)}</span>
                 </div>
                 
                 {/* Auth Status Indicator */}

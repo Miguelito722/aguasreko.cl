@@ -53,7 +53,7 @@ const ValueProposition: React.FC = () => {
   };
 
   return (
-    <section id="nosotros" className="py-24 bg-white">
+    <section id="nosotros" className="py-24 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -62,13 +62,13 @@ const ValueProposition: React.FC = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Lo que nos hace{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               únicos
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Más que agua, te entregamos calidad, confianza y un compromiso con nuestro entorno.
           </p>
         </motion.div>
@@ -97,10 +97,10 @@ const ValueProposition: React.FC = () => {
                 <div className={`absolute inset-0 mx-auto w-20 h-20 rounded-2xl bg-gradient-to-r ${value.color} blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-300`}></div>
               </motion.div>
               
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                 {value.title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {value.description}
               </p>
             </motion.div>

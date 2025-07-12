@@ -47,7 +47,7 @@ const HowItWorks: React.FC = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+    <section className="py-24 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -56,13 +56,13 @@ const HowItWorks: React.FC = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Recibe la mejor agua en{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               3 simples pasos
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Hacemos que mantenerse hidratado sea fácil, conveniente y delicioso.
           </p>
         </motion.div>
@@ -91,7 +91,8 @@ const HowItWorks: React.FC = () => {
                 </motion.div>
                 
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{step.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{step.description}</p>
               </div>
               
               {/* Connection Line */}

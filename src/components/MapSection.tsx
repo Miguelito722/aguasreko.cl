@@ -43,7 +43,7 @@ const MapSection: React.FC = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -52,13 +52,13 @@ const MapSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Visítanos en{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Los Ángeles
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Estamos ubicados en el corazón de Los Ángeles, listos para atenderte y resolver todas tus consultas.
           </p>
         </motion.div>
@@ -72,8 +72,8 @@ const MapSection: React.FC = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="bg-white rounded-3xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Información de Contacto</h3>
+            className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg dark:shadow-gray-900/50">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Información de Contacto</h3>
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
                   <motion.div
@@ -92,10 +92,10 @@ const MapSection: React.FC = () => {
                       <info.icon className="h-6 w-6" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 mb-1">{info.title}</h4>
-                      <p className="text-gray-600">{info.content}</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{info.title}</h4>
+                      <p className="text-gray-600 dark:text-gray-300">{info.content}</p>
                       {info.action && (
-                        <p className="text-sm text-blue-600 mt-1">Click para contactar</p>
+                        <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">Click para contactar</p>
                       )}
                     </div>
                     {info.action && (

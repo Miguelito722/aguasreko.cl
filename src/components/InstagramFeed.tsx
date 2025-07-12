@@ -71,7 +71,7 @@ const InstagramFeed: React.FC = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-purple-50 to-pink-50">
+    <section className="py-24 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-purple-900">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -82,14 +82,14 @@ const InstagramFeed: React.FC = () => {
         >
           <div className="flex items-center justify-center space-x-3 mb-4">
             <Instagram className="h-8 w-8 text-pink-600" />
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
               Síguenos en{' '}
               <span className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                 Instagram
               </span>
             </h2>
           </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6">
             Descubre el día a día de Aguas Reko y mantente al tanto de nuestras novedades.
           </p>
           <motion.a
@@ -116,7 +116,7 @@ const InstagramFeed: React.FC = () => {
           {instagramPosts.map((post) => (
             <motion.div
               key={post.id}
-              className="group relative bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500"
+              className="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 overflow-hidden hover:shadow-2xl dark:hover:shadow-gray-900/70 transition-all duration-500"
               variants={itemVariants}
               whileHover={{ y: -5 }}
             >
@@ -148,7 +148,7 @@ const InstagramFeed: React.FC = () => {
               </div>
 
               <div className="p-4">
-                <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed line-clamp-3">
                   {post.caption}
                 </p>
               </div>

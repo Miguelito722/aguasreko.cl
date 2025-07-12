@@ -52,7 +52,7 @@ const Products: React.FC = () => {
   }, []);
 
   return (
-    <section id="productos" className="py-24 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <section id="productos" className="py-24 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-blue-900">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -61,13 +61,13 @@ const Products: React.FC = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Elige tu{' '}
             <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
               formato ideal
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Tenemos la solución perfecta para tu hogar, tu oficina y para llevar a donde vayas.
           </p>
         </motion.div>

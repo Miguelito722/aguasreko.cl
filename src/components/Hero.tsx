@@ -8,7 +8,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-900 via-gray-900 to-black dark:from-gray-900 dark:via-black dark:to-blue-900">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
           alt="Familia brindando con agua pura"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60 dark:from-black/60 dark:via-black/50 dark:to-black/80"></div>
       </div>
 
       {/* Content */}

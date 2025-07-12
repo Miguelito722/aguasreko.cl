@@ -63,7 +63,7 @@ const AboutSection: React.FC = () => {
   ];
 
   return (
-    <section id="nosotros" className="py-24 bg-white">
+    <section id="nosotros" className="py-24 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
@@ -73,13 +73,13 @@ const AboutSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Conoce{' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Aguas Reko
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Más de 3 años llevando la pureza del sur de Chile directamente a tu hogar y empresa.
           </p>
         </motion.div>
@@ -93,8 +93,8 @@ const AboutSection: React.FC = () => {
           viewport={{ once: true }}
         >
           <div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">Nuestra Historia</h3>
-            <div className="space-y-4 text-gray-700 leading-relaxed">
+            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Nuestra Historia</h3>
+            <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
               <p>
                 Aguas Reko nació en 2022 en Los Ángeles, región del Biobío, con una misión clara: 
                 llevar agua de la más alta calidad a cada hogar y empresa de nuestra región.
