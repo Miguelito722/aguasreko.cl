@@ -30,7 +30,7 @@ export const products: Product[] = [
     name: 'Dispensador para Mascotas',
     price: 24990,
     description: 'Mantén a tu mejor amigo siempre hidratado con agua fresca y limpia. Perfecto para perros y gatos de todos los tamaños.',
-    image: '/image copy.png',
+    image: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?q=80&w=1000&auto=format&fit=crop',
     category: 'dispensador'
   }
 ];
