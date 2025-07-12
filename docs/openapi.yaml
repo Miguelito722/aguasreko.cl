@@ -1,0 +1,1105 @@
+openapi: 3.0.3
+info:
+  title: Aguas Reko API
+  description: |
+    The Aguas Reko API provides programmatic access to our water delivery platform.
+    This RESTful API allows you to manage users, products, orders, payments, and enterprise quotes.
+    
+    ## Authentication
+    All API requests require authentication using Bearer tokens.
+    
+    ## Rate Limiting
+    API requests are rate limited to ensure fair usage:
+    - Authenticated requests: 1000 requests per hour
+    - Unauthenticated requests: 100 requests per hour
+    - Payment endpoints: 50 requests per hour
+    
+    ## Support
+    For API support, contact api-support@aguasreko.cl
+  version: 1.2.0
+  contact:
+    name: Aguas Reko API Support
+    email: api-support@aguasreko.cl
+    url: https://docs.aguasreko.cl
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://aguasreko.cl/api-terms
+
+servers:
+  - url: https://api.aguasreko.cl/v1
+    description: Production server
+  - url: https://staging-api.aguasreko.cl/v1
+    description: Staging server
+  - url: https://dev-api.aguasreko.cl/v1
+    description: Development server
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticate user and obtain access token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: user@aguasreko.cl
+              password: securepassword123
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: User registration
+      description: Register a new user account
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Refresh access token using refresh token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/profile:
+    get:
+      tags:
+        - User Management
+      summary: Get user profile
+      description: Get current user profile information
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    put:
+      tags:
+        - User Management
+      summary: Update user profile
+      description: Update current user profile information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /products:
+    get:
+      tags:
+        - Product Management
+      summary: Get products
+      description: Get list of available products with optional filtering
+      security: []
+      parameters:
+        - name: category
+          in: query
+          description: Filter by product category
+          schema:
+            type: string
+            enum: [bidon, dispensador, botellas]
+        - name: limit
+          in: query
+          description: Number of results to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Pagination offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Products retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductListResponse'
+
+  /products/{product_id}:
+    get:
+      tags:
+        - Product Management
+      summary: Get product details
+      description: Get detailed information about a specific product
+      security: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: Product identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetailResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /orders:
+    get:
+      tags:
+        - Order Management
+      summary: Get user orders
+      description: Get list of user's orders with optional filtering
+      parameters:
+        - name: status
+          in: query
+          description: Filter by order status
+          schema:
+            type: string
+            enum: [pending, confirmed, delivered, cancelled]
+        - name: limit
+          in: query
+          description: Number of results to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Pagination offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Orders retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags:
+        - Order Management
+      summary: Create order
+      description: Create a new order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /orders/{order_id}:
+    get:
+      tags:
+        - Order Management
+      summary: Get order details
+      description: Get detailed information about a specific order
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: Order identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /payments/webpay/create:
+    post:
+      tags:
+        - Payment Processing
+      summary: Create Webpay transaction
+      description: Create a new Webpay Plus transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebpayCreateRequest'
+      responses:
+        '201':
+          description: Webpay transaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebpayCreateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /payments/webpay/confirm:
+    post:
+      tags:
+        - Payment Processing
+      summary: Confirm Webpay transaction
+      description: Confirm a Webpay Plus transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebpayConfirmRequest'
+      responses:
+        '200':
+          description: Webpay transaction confirmed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebpayConfirmResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /quotes/enterprise:
+    post:
+      tags:
+        - Enterprise Quotes
+      summary: Create enterprise quote
+      description: Create a new enterprise quote request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseQuoteRequest'
+      responses:
+        '201':
+          description: Enterprise quote created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseQuoteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /quotes/enterprise/{quote_id}:
+    get:
+      tags:
+        - Enterprise Quotes
+      summary: Get enterprise quote
+      description: Get detailed information about an enterprise quote
+      parameters:
+        - name: quote_id
+          in: path
+          required: true
+          description: Quote identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Enterprise quote retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseQuoteDetailResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # Authentication Schemas
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@aguasreko.cl
+        password:
+          type: string
+          format: password
+          example: securepassword123
+
+    LoginResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        refresh_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 3600
+        user:
+          $ref: '#/components/schemas/User'
+
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+        - phone
+        - address
+        - city
+        - region
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          minLength: 8
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+
+    RegisterResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        message:
+          type: string
+          example: User registered successfully. Please verify your email.
+
+    RefreshRequest:
+      type: object
+      required:
+        - refresh_token
+      properties:
+        refresh_token:
+          type: string
+
+    # User Schemas
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: usr_123456
+        email:
+          type: string
+          format: email
+          example: user@aguasreko.cl
+        name:
+          type: string
+          example: Juan Pérez
+        phone:
+          type: string
+          example: +56912345678
+        address:
+          type: string
+          example: Los Onas 1091
+        city:
+          type: string
+          example: Los Ángeles
+        region:
+          type: string
+          example: Biobío
+        verified:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserProfileResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+
+    # Product Schemas
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: prod_123
+        name:
+          type: string
+          example: Bidón Retornable 20L
+        description:
+          type: string
+          example: La opción ideal para tu dispensador...
+        price:
+          type: integer
+          example: 3500
+        currency:
+          type: string
+          example: CLP
+        category:
+          type: string
+          enum: [bidon, dispensador, botellas]
+          example: bidon
+        image_url:
+          type: string
+          format: uri
+          example: https://images.aguasreko.cl/bidon-20l.jpg
+        in_stock:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+
+    ProductDetail:
+      allOf:
+        - $ref: '#/components/schemas/Product'
+        - type: object
+          properties:
+            specifications:
+              type: object
+              properties:
+                volume:
+                  type: string
+                  example: 20L
+                material:
+                  type: string
+                  example: PET reciclable
+                returnable:
+                  type: boolean
+                  example: true
+            stock_quantity:
+              type: integer
+              example: 150
+            updated_at:
+              type: string
+              format: date-time
+
+    ProductListResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    ProductDetailResponse:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/ProductDetail'
+
+    # Order Schemas
+    OrderItem:
+      type: object
+      properties:
+        product_id:
+          type: string
+          example: prod_123
+        product_name:
+          type: string
+          example: Bidón Retornable 20L
+        quantity:
+          type: integer
+          example: 2
+        unit_price:
+          type: integer
+          example: 3500
+        total_price:
+          type: integer
+          example: 7000
+
+    DeliveryAddress:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Los Onas 1091
+        city:
+          type: string
+          example: Los Ángeles
+        region:
+          type: string
+          example: Biobío
+        postal_code:
+          type: string
+          example: "4440000"
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ord_789012
+        status:
+          type: string
+          enum: [pending, confirmed, delivered, cancelled]
+          example: pending
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        subtotal:
+          type: integer
+          example: 7000
+        delivery_fee:
+          type: integer
+          example: 0
+        total:
+          type: integer
+          example: 7000
+        currency:
+          type: string
+          example: CLP
+        delivery_address:
+          $ref: '#/components/schemas/DeliveryAddress'
+        estimated_delivery:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateOrderRequest:
+      type: object
+      required:
+        - items
+        - delivery_address
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            required:
+              - product_id
+              - quantity
+            properties:
+              product_id:
+                type: string
+              quantity:
+                type: integer
+                minimum: 1
+        delivery_address:
+          $ref: '#/components/schemas/DeliveryAddress'
+        delivery_notes:
+          type: string
+        preferred_delivery_date:
+          type: string
+          format: date
+
+    OrderListResponse:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              status:
+                type: string
+              total:
+                type: integer
+              currency:
+                type: string
+              items_count:
+                type: integer
+              delivery_date:
+                type: string
+                format: date-time
+              created_at:
+                type: string
+                format: date-time
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    OrderDetailResponse:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+
+    # Payment Schemas
+    WebpayCreateRequest:
+      type: object
+      required:
+        - order_id
+        - amount
+        - currency
+        - return_url
+        - customer
+      properties:
+        order_id:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+          example: CLP
+        return_url:
+          type: string
+          format: uri
+        customer:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+            name:
+              type: string
+
+    WebpayCreateResponse:
+      type: object
+      properties:
+        transaction:
+          type: object
+          properties:
+            token:
+              type: string
+            url:
+              type: string
+              format: uri
+            amount:
+              type: integer
+            order_id:
+              type: string
+            session_id:
+              type: string
+            expires_at:
+              type: string
+              format: date-time
+
+    WebpayConfirmRequest:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+
+    WebpayConfirmResponse:
+      type: object
+      properties:
+        transaction:
+          type: object
+          properties:
+            status:
+              type: string
+              example: AUTHORIZED
+            transaction_id:
+              type: string
+            amount:
+              type: integer
+            currency:
+              type: string
+            authorization_code:
+              type: string
+            card_number:
+              type: string
+              example: "****1234"
+            card_type:
+              type: string
+              example: Visa
+            installments:
+              type: integer
+            order_id:
+              type: string
+            processed_at:
+              type: string
+              format: date-time
+
+    # Enterprise Quote Schemas
+    EnterpriseQuoteRequest:
+      type: object
+      required:
+        - company_name
+        - contact_name
+        - email
+        - phone
+        - address
+        - city
+        - region
+        - employee_count
+        - service_types
+      properties:
+        company_name:
+          type: string
+        contact_name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        employee_count:
+          type: string
+          enum: ["1-10", "11-25", "26-50", "51-100", "101-250", "250+"]
+        monthly_consumption:
+          type: string
+          enum: [bajo, medio, alto, muy-alto]
+        service_types:
+          type: array
+          items:
+            type: string
+            enum: [bidones, dispensadores, botellas, mantenimiento]
+        additional_services:
+          type: array
+          items:
+            type: string
+            enum: [delivery, emergency, storage, training]
+        comments:
+          type: string
+
+    EnterpriseQuoteResponse:
+      type: object
+      properties:
+        quote:
+          type: object
+          properties:
+            id:
+              type: string
+            status:
+              type: string
+              example: pending
+            company_name:
+              type: string
+            contact_name:
+              type: string
+            estimated_monthly_cost:
+              type: integer
+            currency:
+              type: string
+              example: CLP
+            valid_until:
+              type: string
+              format: date-time
+            created_at:
+              type: string
+              format: date-time
+        message:
+          type: string
+
+    EnterpriseQuoteDetailResponse:
+      type: object
+      properties:
+        quote:
+          type: object
+          properties:
+            id:
+              type: string
+            status:
+              type: string
+            company_name:
+              type: string
+            contact_name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            employee_count:
+              type: string
+            service_types:
+              type: array
+              items:
+                type: string
+            estimated_monthly_cost:
+              type: integer
+            currency:
+              type: string
+            valid_until:
+              type: string
+              format: date-time
+            sales_rep:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+
+    # Common Schemas
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 4
+        limit:
+          type: integer
+          example: 20
+        offset:
+          type: integer
+          example: 0
+        has_more:
+          type: boolean
+          example: false
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: The request contains invalid parameters
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                  message:
+                    type: string
+            request_id:
+              type: string
+              example: req_123456789
+            timestamp:
+              type: string
+              format: date-time
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: VALIDATION_ERROR
+              message: Invalid request parameters
+              details:
+                - field: email
+                  message: Email format is invalid
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: AUTHENTICATION_REQUIRED
+              message: Valid authentication token required
+
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: INSUFFICIENT_PERMISSIONS
+              message: User lacks required permissions
+
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: RESOURCE_NOT_FOUND
+              message: Requested resource does not exist
+
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: RESOURCE_ALREADY_EXISTS
+              message: Resource already exists
+
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: RATE_LIMIT_EXCEEDED
+              message: API rate limit exceeded
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error:
+              code: INTERNAL_SERVER_ERROR
+              message: An unexpected error occurred
+
+tags:
+  - name: Authentication
+    description: User authentication and token management
+  - name: User Management
+    description: User profile and account management
+  - name: Product Management
+    description: Product catalog and inventory
+  - name: Order Management
+    description: Order creation and tracking
+  - name: Payment Processing
+    description: Payment processing and transactions
+  - name: Enterprise Quotes
+    description: Enterprise quote requests and management
+
+externalDocs:
+  description: Find more info here
+  url: https://docs.aguasreko.cl

@@ -1,0 +1,560 @@
+{
+  "info": {
+    "name": "Aguas Reko API",
+    "description": "Comprehensive API collection for Aguas Reko water delivery platform",
+    "version": "1.2.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.aguasreko.cl/v1",
+      "type": "string"
+    },
+    {
+      "key": "staging_url",
+      "value": "https://staging-api.aguasreko.cl/v1",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@aguasreko.cl\",\n  \"password\": \"securepassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Authenticate user and obtain access token"
+          },
+          "response": [
+            {
+              "name": "Successful Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@aguasreko.cl\",\n  \"password\": \"securepassword123\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/login",
+                  "host": ["{{base_url}}"],
+                  "path": ["auth", "login"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 3600,\n  \"user\": {\n    \"id\": \"usr_123456\",\n    \"email\": \"user@aguasreko.cl\",\n    \"name\": \"Juan Pérez\",\n    \"phone\": \"+56912345678\",\n    \"verified\": true\n  }\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "    pm.collectionVariables.set('refresh_token', response.refresh_token);",
+                  "    pm.test('Login successful', function () {",
+                  "        pm.expect(response.access_token).to.be.a('string');",
+                  "        pm.expect(response.user.email).to.eql('user@aguasreko.cl');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@aguasreko.cl\",\n  \"password\": \"securepassword123\",\n  \"name\": \"María González\",\n  \"phone\": \"+56987654321\",\n  \"address\": \"Los Onas 1091\",\n  \"city\": \"Los Ángeles\",\n  \"region\": \"Biobío\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user account"
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "refresh"]
+            },
+            "description": "Refresh access token using refresh token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile"]
+            },
+            "description": "Get current user profile"
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Juan Carlos Pérez\",\n  \"phone\": \"+56912345679\",\n  \"address\": \"Nueva Dirección 123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile"]
+            },
+            "description": "Update user profile"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products?limit=10&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "category",
+                  "value": "bidon",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get list of available products"
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/prod_123",
+              "host": ["{{base_url}}"],
+              "path": ["products", "prod_123"]
+            },
+            "description": "Get specific product details"
+          }
+        },
+        {
+          "name": "Get Products by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products?category=bidon",
+              "host": ["{{base_url}}"],
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "bidon"
+                }
+              ]
+            },
+            "description": "Get products filtered by category"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"product_id\": \"prod_123\",\n      \"quantity\": 2\n    },\n    {\n      \"product_id\": \"prod_456\",\n      \"quantity\": 1\n    }\n  ],\n  \"delivery_address\": {\n    \"street\": \"Los Onas 1091\",\n    \"city\": \"Los Ángeles\",\n    \"region\": \"Biobío\",\n    \"postal_code\": \"4440000\"\n  },\n  \"delivery_notes\": \"Entregar en horario de oficina\",\n  \"preferred_delivery_date\": \"2025-01-05\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": ["{{base_url}}"],
+              "path": ["orders"]
+            },
+            "description": "Create a new order"
+          }
+        },
+        {
+          "name": "Get User Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders?limit=20&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["orders"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "status",
+                  "value": "pending",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get user's order history"
+          }
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/ord_789012",
+              "host": ["{{base_url}}"],
+              "path": ["orders", "ord_789012"]
+            },
+            "description": "Get specific order details"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Webpay",
+          "item": [
+            {
+              "name": "Create Webpay Transaction",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order_id\": \"ord_789012\",\n  \"amount\": 7000,\n  \"currency\": \"CLP\",\n  \"return_url\": \"https://aguasreko.cl/payment-return\",\n  \"customer\": {\n    \"email\": \"user@aguasreko.cl\",\n    \"name\": \"Juan Pérez\"\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/payments/webpay/create",
+                  "host": ["{{base_url}}"],
+                  "path": ["payments", "webpay", "create"]
+                },
+                "description": "Create Webpay Plus transaction"
+              }
+            },
+            {
+              "name": "Confirm Webpay Transaction",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"01ab23cd45ef67890123456789abcdef\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/payments/webpay/confirm",
+                  "host": ["{{base_url}}"],
+                  "path": ["payments", "webpay", "confirm"]
+                },
+                "description": "Confirm Webpay Plus transaction"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mach",
+          "item": [
+            {
+              "name": "Create Mach Payment",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order_id\": \"ord_789012\",\n  \"amount\": 7000,\n  \"currency\": \"CLP\",\n  \"description\": \"Aguas Reko - Pedido #789012\",\n  \"customer\": {\n    \"email\": \"user@aguasreko.cl\",\n    \"phone\": \"+56912345678\",\n    \"name\": \"Juan Pérez\"\n  }\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/payments/mach/create",
+                  "host": ["{{base_url}}"],
+                  "path": ["payments", "mach", "create"]
+                },
+                "description": "Create Mach payment"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Enterprise Quotes",
+      "item": [
+        {
+          "name": "Create Enterprise Quote",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Empresa Ejemplo S.A.\",\n  \"contact_name\": \"María González\",\n  \"email\": \"maria@empresa.cl\",\n  \"phone\": \"+56987654321\",\n  \"address\": \"Av. Principal 123\",\n  \"city\": \"Los Ángeles\",\n  \"region\": \"Biobío\",\n  \"employee_count\": \"51-100\",\n  \"monthly_consumption\": \"alto\",\n  \"service_types\": [\"bidones\", \"dispensadores\"],\n  \"additional_services\": [\"delivery\", \"maintenance\"],\n  \"comments\": \"Necesitamos servicio para 3 oficinas\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/quotes/enterprise",
+              "host": ["{{base_url}}"],
+              "path": ["quotes", "enterprise"]
+            },
+            "description": "Create enterprise quote request"
+          }
+        },
+        {
+          "name": "Get Enterprise Quote",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/quotes/enterprise/quote_123456",
+              "host": ["{{base_url}}"],
+              "path": ["quotes", "enterprise", "quote_123456"]
+            },
+            "description": "Get enterprise quote details"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Webpay Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Tbk-Signature",
+                "value": "sha256=abc123def456..."
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"WP_123456789\",\n  \"order_id\": \"ord_789012\",\n  \"status\": \"AUTHORIZED\",\n  \"amount\": 7000,\n  \"authorization_code\": \"123456\",\n  \"timestamp\": \"2025-01-03T10:35:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks/webpay",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "webpay"]
+            },
+            "description": "Webpay Plus webhook for payment notifications"
+          }
+        },
+        {
+          "name": "Mach Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Mach-Signature",
+                "value": "base64encodedhmac..."
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_id\": \"mach_abc123def456\",\n  \"order_id\": \"ord_789012\",\n  \"status\": \"approved\",\n  \"amount\": 7000,\n  \"timestamp\": \"2025-01-03T10:35:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/webhooks/mach",
+              "host": ["{{base_url}}"],
+              "path": ["webhooks", "mach"]
+            },
+            "description": "Mach webhook for payment notifications"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add request ID for tracking",
+          "pm.request.headers.add({",
+          "    key: 'X-Request-ID',",
+          "    value: 'req_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)",
+          "});",
+          "",
+          "// Add API version header",
+          "pm.request.headers.add({",
+          "    key: 'X-API-Version',",
+          "    value: 'v1'",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global tests for all requests",
+          "pm.test('Response time is less than 5000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+          "});",
+          "",
+          "pm.test('Response has correct content type', function () {",
+          "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+          "});",
+          "",
+          "// Check for rate limiting headers",
+          "if (pm.response.headers.has('X-RateLimit-Limit')) {",
+          "    pm.test('Rate limit headers present', function () {",
+          "        pm.expect(pm.response.headers.get('X-RateLimit-Limit')).to.be.a('string');",
+          "        pm.expect(pm.response.headers.get('X-RateLimit-Remaining')).to.be.a('string');",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ]
+}
