@@ -80,7 +80,7 @@ const AboutSection: React.FC = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Más de 15 años llevando la pureza del sur de Chile directamente a tu hogar y empresa.
+            Más de 3 años llevando la pureza del sur de Chile directamente a tu hogar y empresa.
           </p>
         </motion.div>
 
