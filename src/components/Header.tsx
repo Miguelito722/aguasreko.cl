@@ -5,6 +5,7 @@ import { useCartContext } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import UserMenu from './UserMenu';
 import AuthModal from './AuthModal';
+import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -133,6 +134,9 @@ const Header: React.FC = () => {
                   {formatVisitCount(visitCount)} visitas
                 </span>
               </motion.div>
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
 
               {/* Auth Buttons or User Menu */}
               {!isLoading && (

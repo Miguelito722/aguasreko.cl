@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Import theme variables */
+@import './styles/theme.css';
+
+/* Apply theme-aware styles to body */
+body {
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text-primary));
+}
+
+/* Ensure smooth transitions */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--color-background-secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-border-secondary));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-border-tertiary));
+}

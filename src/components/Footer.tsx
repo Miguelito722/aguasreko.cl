@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer id="contacto" className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <footer id="contacto" className="bg-gradient-to-br from-background-tertiary via-surface to-background-secondary text-text-primary">
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand Section */}
@@ -50,15 +50,15 @@ const Footer: React.FC = () => {
           >
             <div className="flex items-center space-x-3 mb-6">
               <div className="relative">
-                <Droplets className="h-10 w-10 text-blue-400" />
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-400 rounded-full animate-pulse"></div>
+                <Droplets className="h-10 w-10 text-primary" />
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full animate-pulse"></div>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 Aguas Reko
               </span>
             </div>
             
-            <p className="text-gray-400 mb-6 leading-relaxed">
+            <p className="text-text-secondary mb-6 leading-relaxed">
               Somos una empresa del sur de Chile dedicada a llevar agua purificada de la más alta calidad y sabor a tu hogar y lugar de trabajo.
             </p>
             
@@ -69,7 +69,7 @@ const Footer: React.FC = () => {
                   href={social.href}
                   target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className={`w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-gray-400 transition-all duration-300 ${social.color}`}
+                  className={`w-10 h-10 bg-surface-secondary rounded-full flex items-center justify-center text-text-tertiary transition-all duration-300 hover:text-primary`}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -88,16 +88,16 @@ const Footer: React.FC = () => {
               transition={{ duration: 0.6, delay: (index + 1) * 0.1 }}
               viewport={{ once: true }}
             >
-              <h4 className="text-xl font-bold mb-6 text-white">{section.title}</h4>
+              <h4 className="text-xl font-bold mb-6 text-text-primary">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <motion.a
                       href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group"
+                      className="text-text-secondary hover:text-text-primary transition-colors duration-300 flex items-center group"
                       whileHover={{ x: 5 }}
                     >
-                      <span className="w-0 h-0.5 bg-blue-400 group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-2"></span>
+                      <span className="w-0 h-0.5 bg-primary group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-2"></span>
                       {link.name}
                     </motion.a>
                   </li>
@@ -113,17 +113,17 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-xl font-bold mb-6 text-white">Contacto</h4>
+            <h4 className="text-xl font-bold mb-6 text-text-primary">Contacto</h4>
             <ul className="space-y-4">
               {contactInfo.map((info, index) => (
-                <li key={index} className="flex items-start space-x-3 text-gray-400">
-                  <info.icon className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                <li key={index} className="flex items-start space-x-3 text-text-secondary">
+                  <info.icon className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   {info.link ? (
                     <motion.a
                       href={info.link}
                       target={info.link.startsWith('http') ? '_blank' : undefined}
                       rel={info.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="leading-relaxed hover:text-white transition-colors duration-300"
+                      className="leading-relaxed hover:text-text-primary transition-colors duration-300"
                       whileHover={{ x: 2 }}
                     >
                       {info.text}
@@ -139,13 +139,13 @@ const Footer: React.FC = () => {
 
         {/* Bottom Section */}
         <motion.div
-          className="mt-16 pt-8 border-t border-gray-700 text-center"
+          className="mt-16 pt-8 border-t border-border text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <p className="text-gray-500">
+          <p className="text-text-tertiary">
             &copy; 2025 Aguas Reko. Todos los derechos reservados.
           </p>
         </motion.div>
