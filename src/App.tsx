@@ -7,6 +7,7 @@ import HowItWorks from './components/HowItWorks';
 import Products from './components/Products';
 import InstagramFeed from './components/InstagramFeed';
 import ValueProposition from './components/ValueProposition';
+import AboutSection from './components/AboutSection';
 import ForCompanies from './components/ForCompanies';
 import MapSection from './components/MapSection';
 import Footer from './components/Footer';
@@ -60,6 +61,7 @@ function App() {
             <Products />
             <InstagramFeed />
             <ValueProposition />
+            <AboutSection />
             <ForCompanies />
             <MapSection />
           </main>
