@@ -68,11 +68,14 @@ export class TransbankService {
         ? Environment.Production 
         : Environment.Integration;
 
-      // Set configuration
-      WebpayPlus.configureForIntegration(this.config.commerceCode, this.config.apiKey);
+      // Create Options object with commerce code and API key
+      const options = new Options(this.config.commerceCode, this.config.apiKey);
       
+      // Set configuration based on environment
       if (this.config.environment === 'production') {
-        WebpayPlus.configureForProduction(this.config.commerceCode, this.config.apiKey);
+        WebpayPlus.configureForProduction(options);
+      } else {
+        WebpayPlus.configureForIntegration(options);
       }
 
       this.webpayPlus = WebpayPlus;
