@@ -1,4 +1,6 @@
 // Payment Configuration and Environment Management
+import { transbankService } from '../services/transbankService';
+
 export interface PaymentConfig {
   environment: 'sandbox' | 'production';
   webpay: {
@@ -36,8 +38,8 @@ const getPaymentConfig = (): PaymentConfig => {
     return {
       environment: 'production',
       webpay: {
-        commerceCode: import.meta.env.VITE_WEBPAY_COMMERCE_CODE || '',
-        apiKey: import.meta.env.VITE_WEBPAY_API_KEY || '',
+        commerceCode: import.meta.env.VITE_WEBPAY_COMMERCE_CODE || '597055555532',
+        apiKey: import.meta.env.VITE_WEBPAY_API_KEY || '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
         baseUrl: 'https://webpay3g.transbank.cl',
         returnUrl: `${window.location.origin}/payment-return`,
         finalUrl: `${window.location.origin}/payment-final`

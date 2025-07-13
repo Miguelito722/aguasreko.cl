@@ -4,6 +4,7 @@ import { Play, CheckCircle, XCircle, Clock, Shield, Key, Webhook, TestTube } fro
 import { PaymentTestingService } from '../services/testingService';
 import { SSLService } from '../services/sslService';
 import { paymentConfig } from '../config/payment';
+import { transbankService } from '../services/transbankService';
 
 const PaymentTestDashboard: React.FC = () => {
   const [testResults, setTestResults] = useState<any>(null);
@@ -99,8 +100,12 @@ const PaymentTestDashboard: React.FC = () => {
               </div>
               <h3 className="font-semibold text-gray-900">API Keys</h3>
             </div>
-            <p className="text-2xl font-bold text-green-600">4/4</p>
-            <p className="text-sm text-gray-500">Configured</p>
+            <p className="text-2xl font-bold text-green-600">
+              {transbankService.validateConfig() ? 'Valid' : 'Invalid'}
+            </p>
+            <p className="text-sm text-gray-500">
+              Transbank: {transbankService.getConfig().environment}
+            </p>
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-lg">

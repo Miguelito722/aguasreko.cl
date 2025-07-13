@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { paymentAPI } from '../services/paymentAPI';
 import { SecurityUtils } from '../utils/security';
 import { paymentConfig } from '../config/payment';
+import { transbankService } from '../services/transbankService';
 import PaymentTestDashboard from './PaymentTestDashboard';
 
 interface PaymentPageProps {

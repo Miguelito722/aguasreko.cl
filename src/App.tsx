@@ -17,6 +17,7 @@ import ConfigurationRouter from './components/ConfigurationRouter';
 import EnterpriseQuoteRouter from './components/EnterpriseQuoteRouter';
 import EnterpriseRouter from './components/EnterpriseRouter';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
+import PaymentReturnPage from './components/PaymentReturnPage';
 
 function App() {
   // Check if we're on the payment page
@@ -33,6 +34,10 @@ function App() {
 
   // Check if we're on the analytics page
   const isAnalyticsPage = window.location.pathname === '/analytics';
+  
+  // Check if we're on the payment return page
+  const isPaymentReturnPage = window.location.pathname === '/payment-return';
+  
   if (isPaymentPage) {
     return (
       <AuthProvider>
@@ -72,6 +77,15 @@ function App() {
       </AuthProvider>
     );
   }
+  
+  if (isPaymentReturnPage) {
+    return (
+      <AuthProvider>
+        <PaymentReturnPage />
+      </AuthProvider>
+    );
+  }
+  
   return (
     <AuthProvider>
       <CartProvider>
