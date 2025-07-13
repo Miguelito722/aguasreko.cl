@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import UserMenu from './UserMenu';
 import AuthModal from './AuthModal';
 import ThemeToggle from './ThemeToggle';
+import { AnalyticsService } from '../services/analyticsService';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,24 +27,24 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Initialize and update visit counter
-    const initializeVisitCounter = () => {
-      const currentCount = parseInt(localStorage.getItem('aguasreko_visit_count') || '0');
-      const lastVisit = localStorage.getItem('aguasreko_last_visit');
-      const today = new Date().toDateString();
-      
-      // Only increment if it's a new day or first visit
-      if (lastVisit !== today) {
-        const newCount = currentCount + 1;
-        localStorage.setItem('aguasreko_visit_count', newCount.toString());
-        localStorage.setItem('aguasreko_last_visit', today);
-        setVisitCount(newCount);
-      } else {
+    // Track page visit and initialize counter
+    const initializeAnalytics = async () => {
+      try {
+        // Track this page visit
+        await AnalyticsService.trackVisit(window.location.pathname);
+        
+        // Get current visit count
+        const currentCount = parseInt(localStorage.getItem('aguasreko_visit_count') || '0');
+        setVisitCount(currentCount);
+      } catch (error) {
+        console.error('Failed to initialize analytics:', error);
+        // Fallback to simple counter
+        const currentCount = parseInt(localStorage.getItem('aguasreko_visit_count') || '0');
         setVisitCount(currentCount);
       }
     };
 
-    initializeVisitCounter();
+    initializeAnalytics();
   }, []);
 
   const navItems = [
@@ -128,10 +129,16 @@ const Header: React.FC = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
                 whileHover={{ scale: 1.05 }}
+                onClick={() => window.open('/analytics', '_blank')}
+                className={`hidden md:flex items-center space-x-2 px-3 py-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  isScrolled 
+                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100' 
+                    : 'bg-white/10 dark:bg-gray-800/30 backdrop-blur-sm text-white border border-white/20 dark:border-gray-600/30 hover:bg-white/20'
+                }`}
               >
                 <Eye className="h-4 w-4" />
                 <span className="text-sm font-medium">
-                  {formatVisitCount(visitCount)} visitas
+                  {formatVisitCount(visitCount)} visitas (Ver detalles)
                 </span>
               </motion.div>
 
