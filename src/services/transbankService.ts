@@ -1,5 +1,5 @@
-// Transbank SDK Integration Service
-import { WebpayPlus, Options, IntegrationType, Environment } from 'transbank-sdk';
+// Browser-compatible Transbank Service (Mock Implementation)
+// Note: Real Transbank integration should be done on the backend for security
 
 export interface TransbankConfig {
   commerceCode: string;
@@ -40,14 +40,13 @@ export interface TransactionConfirmation {
 
 export class TransbankService {
   private static instance: TransbankService;
-  private webpayPlus: any;
   private config: TransbankConfig;
 
   private constructor() {
     // Initialize with default configuration
     this.config = {
-      commerceCode: import.meta.env.VITE_WEBPAY_COMMERCE_CODE || '597055555532', // Default integration commerce code
-      apiKey: import.meta.env.VITE_WEBPAY_API_KEY || '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C', // Default integration API key
+      commerceCode: import.meta.env.VITE_WEBPAY_COMMERCE_CODE || '597055555532',
+      apiKey: import.meta.env.VITE_WEBPAY_API_KEY || '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
       environment: (import.meta.env.VITE_PAYMENT_ENV as 'integration' | 'production') || 'integration'
     };
 
@@ -63,62 +62,75 @@ export class TransbankService {
 
   private initializeWebpay(): void {
     try {
-      // Configure Webpay Plus with environment
-      const environment = this.config.environment === 'production' 
-        ? Environment.Production 
-        : Environment.Integration;
-
-      // Create Options object with commerce code and API key
-      const options = new Options(this.config.commerceCode, this.config.apiKey);
-      
-      // Set configuration based on environment
-      if (this.config.environment === 'production') {
-        WebpayPlus.configureForProduction(options);
-      } else {
-        WebpayPlus.configureForIntegration(options);
-      }
-
-      this.webpayPlus = WebpayPlus;
-      
-      console.log(`Transbank initialized for ${this.config.environment} environment`);
+      console.log(`Transbank mock service initialized for ${this.config.environment} environment`);
+      console.log('Note: This is a frontend mock. Real integration should be done on the backend.');
     } catch (error) {
       console.error('Failed to initialize Transbank:', error);
       throw new Error('Transbank initialization failed');
     }
   }
 
-  // Create a new transaction
+  // Create a new transaction (Mock implementation)
   public async createTransaction(request: TransactionRequest): Promise<TransactionResponse> {
     try {
-      console.log('Creating Transbank transaction:', request);
+      console.log('Creating Transbank transaction (MOCK):', request);
 
-      const response = await this.webpayPlus.Transaction.create(
-        request.buyOrder,
-        request.sessionId,
-        request.amount,
-        request.returnUrl
-      );
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      console.log('Transaction created successfully:', response);
+      // Generate mock response
+      const mockToken = `mock_token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const mockUrl = this.config.environment === 'production' 
+        ? `https://webpay3g.transbank.cl/webpayserver/initTransaction`
+        : `https://webpay3gint.transbank.cl/webpayserver/initTransaction`;
 
-      return {
-        token: response.token,
-        url: response.url
+      const response = {
+        token: mockToken,
+        url: `${mockUrl}?token_ws=${mockToken}`
       };
+
+      console.log('Transaction created successfully (MOCK):', response);
+
+      return response;
     } catch (error) {
       console.error('Error creating transaction:', error);
       throw new Error(`Failed to create transaction: ${error.message}`);
     }
   }
 
-  // Confirm a transaction
+  // Confirm a transaction (Mock implementation)
   public async confirmTransaction(token: string): Promise<TransactionConfirmation> {
     try {
-      console.log('Confirming transaction with token:', token);
+      console.log('Confirming transaction with token (MOCK):', token);
 
-      const response = await this.webpayPlus.Transaction.commit(token);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-      console.log('Transaction confirmed:', response);
+      // Generate mock confirmation based on token
+      const isApproved = !token.includes('rejected') && !token.includes('timeout');
+      const currentDate = new Date().toISOString().split('T')[0];
+      const currentDateTime = new Date().toISOString();
+
+      const response: TransactionConfirmation = {
+        vci: isApproved ? 'TSY' : 'TSN',
+        amount: 25000, // Mock amount
+        status: isApproved ? 'AUTHORIZED' : 'REJECTED',
+        buyOrder: `ORDER-${Date.now()}`,
+        sessionId: `SESSION-${Date.now()}`,
+        cardDetail: {
+          cardNumber: '************6623'
+        },
+        accountingDate: currentDate,
+        transactionDate: currentDateTime,
+        authorizationCode: isApproved ? `${Math.floor(Math.random() * 1000000)}` : '0',
+        paymentTypeCode: 'VN',
+        responseCode: isApproved ? 0 : -1,
+        installmentsAmount: 25000,
+        installmentsNumber: 0,
+        balance: 0
+      };
+
+      console.log('Transaction confirmed (MOCK):', response);
 
       return response;
     } catch (error) {
@@ -127,21 +139,36 @@ export class TransbankService {
     }
   }
 
-  // Get transaction status
+  // Get transaction status (Mock implementation)
   public async getTransactionStatus(token: string): Promise<TransactionConfirmation> {
     try {
-      const response = await this.webpayPlus.Transaction.status(token);
-      return response;
+      // Reuse confirm transaction logic for status
+      return await this.confirmTransaction(token);
     } catch (error) {
       console.error('Error getting transaction status:', error);
       throw new Error(`Failed to get transaction status: ${error.message}`);
     }
   }
 
-  // Refund a transaction
+  // Refund a transaction (Mock implementation)
   public async refundTransaction(token: string, amount: number): Promise<any> {
     try {
-      const response = await this.webpayPlus.Transaction.refund(token, amount);
+      console.log('Refunding transaction (MOCK):', { token, amount });
+
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      const response = {
+        type: 'REVERSED',
+        authorizationCode: `${Math.floor(Math.random() * 1000000)}`,
+        authorizationDate: new Date().toISOString(),
+        nullifiedAmount: amount,
+        balance: 0,
+        responseCode: 0
+      };
+
+      console.log('Transaction refunded (MOCK):', response);
+
       return response;
     } catch (error) {
       console.error('Error refunding transaction:', error);
@@ -207,6 +234,30 @@ export class TransbankService {
         expiryYear: '25'
       }
     };
+  }
+
+  // Mock method to simulate Webpay redirect
+  public getWebpayRedirectUrl(token: string): string {
+    const baseUrl = this.config.environment === 'production' 
+      ? 'https://webpay3g.transbank.cl'
+      : 'https://webpay3gint.transbank.cl';
+    
+    return `${baseUrl}/webpayserver/initTransaction?token_ws=${token}`;
+  }
+
+  // Mock method to simulate payment form
+  public generateMockPaymentForm(token: string, returnUrl: string): string {
+    return `
+      <form id="webpay-form" action="${this.getWebpayRedirectUrl(token)}" method="POST">
+        <input type="hidden" name="token_ws" value="${token}">
+        <input type="hidden" name="return_url" value="${returnUrl}">
+      </form>
+      <script>
+        console.log('Mock Webpay form generated. In real implementation, this would redirect to Transbank.');
+        // Auto-submit form (in real scenario)
+        // document.getElementById('webpay-form').submit();
+      </script>
+    `;
   }
 }
 
