@@ -342,6 +342,9 @@ const ProductPreview: React.FC<{
           src={product.image}
           alt={product.name}
           className="w-full h-64 object-cover rounded-2xl"
+          onError={(e) => {
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=1000&auto=format&fit=crop';
+          }}
         />
         <motion.button
           onClick={() => setShowImageUpload(!showImageUpload)}
