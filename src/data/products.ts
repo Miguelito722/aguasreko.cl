@@ -6,7 +6,7 @@ export const products: Product[] = [
     name: 'Bidón Retornable 20L',
     price: 3500,
     description: 'La opción ideal para tu dispensador. Perfecto para mantener a toda la familia hidratada. ¡Sustentable y conveniente!',
-    image: '/Imagen de WhatsApp 2025-07-10 a las 17.55.53_020d50a5.jpg',
+    image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=1000&auto=format&fit=crop',
     category: 'bidon'
   },
   {
@@ -14,7 +14,7 @@ export const products: Product[] = [
     name: 'Dispensador Eléctrico',
     price: 89990,
     description: 'Agua fría al instante para refrescarte y agua caliente para tus infusiones. Comodidad y estilo para tu hogar u oficina.',
-    image: '/Imagen de WhatsApp 2025-07-10 a las 17.55.54_5b7ac25e.jpg',
+    image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1000&auto=format&fit=crop',
     category: 'dispensador'
   },
   {
@@ -22,7 +22,7 @@ export const products: Product[] = [
     name: 'Pack 12 Botellas 500ml',
     price: 4800,
     description: 'La dosis perfecta de hidratación para llevar al trabajo o al gimnasio. ¡Lleva la pureza Reko contigo!',
-    image: '/Imagen de WhatsApp 2025-07-10 a las 17.56.35_fa2b67f7.jpg',
+    image: 'https://images.unsplash.com/photo-1550572017-f45071a6b003?q=80&w=1000&auto=format&fit=crop',
     category: 'botellas'
   },
   {
@@ -30,7 +30,7 @@ export const products: Product[] = [
     name: 'Bidón 20L Premium',
     price: 4500,
     description: 'Bidón de agua purificada de calidad premium. Ideal para oficinas y hogares que buscan la máxima pureza.',
-    image: '/Imagen de WhatsApp 2025-07-10 a las 17.56.36_02d469e0.jpg',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop',
     category: 'bidon'
   },
   {
@@ -38,7 +38,7 @@ export const products: Product[] = [
     name: 'Dispensador Compacto',
     price: 65990,
     description: 'Dispensador compacto perfecto para espacios pequeños. Agua fría y natural en un diseño elegante.',
-    image: '/Imagen de WhatsApp 2025-07-10 a las 17.56.37_2f30686a.jpg',
+    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1000&auto=format&fit=crop',
     category: 'dispensador'
   },
   {
@@ -46,7 +46,7 @@ export const products: Product[] = [
     name: 'Bidón Familiar 20L',
     price: 3800,
     description: 'Bidón familiar de 20 litros, perfecto para el consumo diario de toda la familia. Agua pura y refrescante.',
-    image: '/Imagen de WhatsApp 2025-07-10 a las 17.47.16_990ecd39.jpg',
+    image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=1000&auto=format&fit=crop',
     category: 'bidon'
   }
 ];
