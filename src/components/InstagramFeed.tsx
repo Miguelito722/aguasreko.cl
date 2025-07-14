@@ -6,42 +6,42 @@ const InstagramFeed: React.FC = () => {
   const instagramPosts = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3',
       caption: '💧 Agua pura directo de las vertientes del Biobío. La naturaleza en su estado más puro. #AguasReko #AguaPura',
       likes: 245,
       comments: 18
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3',
       caption: '🏢 Mantén a tu equipo hidratado con nuestros planes empresariales. Productividad y bienestar van de la mano. #EmpresasSaludables',
       likes: 189,
       comments: 12
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1624948465027-6f9b51067557?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3',
       caption: '♻️ Bidones retornables = menos plástico. Cuidamos el planeta mientras te hidratamos. #Sustentabilidad #CuidaElPlaneta',
       likes: 312,
       comments: 25
     },
     {
       id: 4,
-      image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3',
       caption: '🏠 Dispensador eléctrico: agua fría y caliente al instante. Comodidad total para tu hogar. #Comodidad #Hogar',
       likes: 156,
       comments: 9
     },
     {
       id: 5,
-      image: 'https://images.unsplash.com/photo-1550572017-f45071a6b003?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1523362628745-0c100150b504?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3',
       caption: '🏃‍♀️ Pack de botellas 500ml para llevar a donde vayas. Hidratación portátil y práctica. #Deporte #Hidratacion',
       likes: 203,
       comments: 14
     },
     {
       id: 6,
-      image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3',
       caption: '🌿 Del sur de Chile para tu mesa. Sabor único que solo la naturaleza puede dar. #SurDeChile #SaborNatural',
       likes: 278,
       comments: 21
