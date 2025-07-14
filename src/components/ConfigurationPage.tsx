@@ -80,7 +80,7 @@ const ConfigurationPage: React.FC = () => {
       name: 'Nuevo Producto',
       price: 0,
       description: 'Descripción del nuevo producto',
-      image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=1000&auto=format&fit=crop',
+      image: '/image.png',
       category: 'bidon'
     };
     
@@ -343,7 +343,7 @@ const ProductPreview: React.FC<{
           alt={product.name}
           className="w-full h-64 object-cover rounded-2xl"
           onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=1000&auto=format&fit=crop';
+            e.currentTarget.src = '/image.png';
           }}
         />
         <motion.button
@@ -536,7 +536,7 @@ const ProductEditor: React.FC<{
             alt="Vista previa"
             className="w-full h-48 object-cover rounded-xl"
             onError={(e) => {
-              e.currentTarget.src = 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3';
+              e.currentTarget.src = '/image.png';
             }}
           />
         </div>

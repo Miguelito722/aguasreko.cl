@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3"
+          src="/Imagen de WhatsApp 2025-07-10 a las 17.56.37_2f30686a.jpg"
           alt="Familia brindando con agua pura"
           className="w-full h-full object-cover"
         />
