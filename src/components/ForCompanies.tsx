@@ -76,7 +76,7 @@ const ForCompanies: React.FC = () => {
           >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?q=80&w=1000&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
                 alt="Oficina moderna"
                 className="w-full h-full object-cover"
               />

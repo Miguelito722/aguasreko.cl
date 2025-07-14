@@ -130,7 +130,7 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.3 }}
             >
               <img
-                src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=1000&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3"
                 alt="Vertientes del sur de Chile"
                 className="w-full h-96 object-cover"
               />
