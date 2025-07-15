@@ -323,9 +323,6 @@ const EnterprisePage: React.FC = () => {
                 <div className="text-center mb-8">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
                   <p className="text-gray-600 mb-4">{plan.employees}</p>
-                  <div className="text-4xl font-bold text-blue-600 mb-2">
-                    {formatPrice(plan.price)}
-                  </div>
                   <p className="text-gray-500 text-sm">{plan.bidones}</p>
                 </div>
 
