@@ -8,13 +8,6 @@ const CartSidebar: React.FC = () => {
   const { items, removeItem, updateQuantity, clearCart, total, isOpen, setIsOpen } = useCartContext();
   const { isAuthenticated } = useAuth();
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('es-CL', {
-      style: 'currency',
-      currency: 'CLP'
-    }).format(price);
-  };
-
   const handleCheckout = () => {
     if (items.length > 0) {
       if (!isAuthenticated) {
@@ -117,7 +110,7 @@ const CartSidebar: React.FC = () => {
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex-1">
                             <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
-                            <p className="text-sm text-gray-600">{formatPrice(item.price)}</p>
+                            <p className="text-sm text-gray-600">Solicitar precio</p>
                           </div>
                           <motion.button
                             onClick={() => removeItem(item.id)}
@@ -150,7 +143,7 @@ const CartSidebar: React.FC = () => {
                             </motion.button>
                           </div>
                           <div className="font-bold text-gray-900">
-                            {formatPrice(item.price * item.quantity)}
+                            <span className="text-sm text-blue-600">Cotizar</span>
                           </div>
                         </div>
                       </motion.div>
@@ -170,7 +163,7 @@ const CartSidebar: React.FC = () => {
               >
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-xl font-bold text-gray-900 dark:text-white">Total:</span>
-                  <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{formatPrice(total)}</span>
+                  <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">A cotizar</span>
                 </div>
                 
                 {/* Auth Status Indicator */}
@@ -197,9 +190,8 @@ const CartSidebar: React.FC = () => {
                     whileTap={isAuthenticated ? { scale: 0.98 } : {}}
                     disabled={!isAuthenticated}
                   >
-                    <CreditCard className="h-5 w-5" />
                     <span>
-                      {isAuthenticated ? 'Proceder al Pago' : 'Inicia Sesión para Comprar'}
+                      {isAuthenticated ? 'Solicitar Cotización' : 'Inicia Sesión para Comprar'}
                     </span>
                   </motion.button>
                   

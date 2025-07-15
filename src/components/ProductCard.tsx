@@ -12,13 +12,6 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
   const { addItem } = useCartContext();
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('es-CL', {
-      style: 'currency',
-      currency: 'CLP'
-    }).format(price);
-  };
-
   const handleAddToCart = () => {
     addItem(product);
   };
@@ -75,8 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <ShoppingCart className="h-4 w-4" />
-            <span>Agregar al Carrito</span>
+            <span>Solicitar Cotización</span>
           </motion.button>
         </div>
       </div>

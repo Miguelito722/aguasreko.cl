@@ -54,10 +54,10 @@ const EnterpriseQuotePage: React.FC = () => {
   const [estimatedQuote, setEstimatedQuote] = useState<number | null>(null);
 
   const serviceTypes = [
-    { id: 'bidones', name: 'Bidones 20L', description: 'Servicio de bidones retornables', basePrice: 3500 },
-    { id: 'dispensadores', name: 'Dispensadores', description: 'Alquiler de dispensadores eléctricos', basePrice: 15000 },
-    { id: 'botellas', name: 'Botellas 500ml', description: 'Packs de botellas individuales', basePrice: 400 },
-    { id: 'mantenimiento', name: 'Mantenimiento', description: 'Limpieza y mantenimiento de equipos', basePrice: 8000 }
+    { id: 'bidones', name: 'Bidones 20L', description: 'Servicio de bidones retornables' },
+    { id: 'dispensadores', name: 'Dispensadores', description: 'Alquiler de dispensadores eléctricos' },
+    { id: 'botellas', name: 'Botellas 500ml', description: 'Packs de botellas individuales' },
+    { id: 'mantenimiento', name: 'Mantenimiento', description: 'Limpieza y mantenimiento de equipos' }
   ];
 
   const additionalServices = [
@@ -66,12 +66,12 @@ const EnterpriseQuotePage: React.FC = () => {
   ];
 
   const employeeRanges = [
-    { value: '1-10', label: '1-10 empleados', multiplier: 1 },
-    { value: '11-25', label: '11-25 empleados', multiplier: 1.5 },
-    { value: '26-50', label: '26-50 empleados', multiplier: 2.5 },
-    { value: '51-100', label: '51-100 empleados', multiplier: 4 },
-    { value: '101-250', label: '101-250 empleados', multiplier: 7 },
-    { value: '250+', label: 'Más de 250 empleados', multiplier: 12 }
+    { value: '1-10', label: '1-10 empleados' },
+    { value: '11-25', label: '11-25 empleados' },
+    { value: '26-50', label: '26-50 empleados' },
+    { value: '51-100', label: '51-100 empleados' },
+    { value: '101-250', label: '101-250 empleados' },
+    { value: '250+', label: 'Más de 250 empleados' }
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -105,33 +105,6 @@ const EnterpriseQuotePage: React.FC = () => {
     }));
   };
 
-  const calculateEstimate = (data: QuoteFormData) => {
-    if (!data.employeeCount || data.serviceType.length === 0) {
-      setEstimatedQuote(null);
-      return;
-    }
-
-    const employeeRange = employeeRanges.find(range => range.value === data.employeeCount);
-    if (!employeeRange) return;
-
-    let baseTotal = 0;
-    data.serviceType.forEach(serviceId => {
-      const service = serviceTypes.find(s => s.id === serviceId);
-      if (service) {
-        baseTotal += service.basePrice;
-      }
-    });
-
-    const monthlyEstimate = baseTotal * employeeRange.multiplier;
-    
-    // Add 20% for additional services if any are selected
-    const finalEstimate = data.additionalServices.length > 0 
-      ? monthlyEstimate * 1.2 
-      : monthlyEstimate;
-
-    setEstimatedQuote(Math.round(finalEstimate));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -144,7 +117,6 @@ const EnterpriseQuotePage: React.FC = () => {
       const quoteRequest = {
         id: `QUOTE-${Date.now()}`,
         ...formData,
-        estimatedQuote,
         submittedAt: new Date().toISOString(),
         status: 'pending'
       };
@@ -159,13 +131,6 @@ const EnterpriseQuotePage: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('es-CL', {
-      style: 'currency',
-      currency: 'CLP'
-    }).format(price);
   };
 
   if (submitted) {
@@ -190,14 +155,6 @@ const EnterpriseQuotePage: React.FC = () => {
           <p className="text-gray-600 mb-6">
             Hemos recibido tu solicitud de cotización. Nuestro equipo comercial se contactará contigo en las próximas 24 horas.
           </p>
-          
-          {estimatedQuote && (
-            <div className="bg-blue-50 rounded-xl p-4 mb-6">
-              <p className="text-sm text-blue-700 mb-1">Estimación preliminar mensual:</p>
-              <p className="text-2xl font-bold text-blue-600">{formatPrice(estimatedQuote)}</p>
-              <p className="text-xs text-blue-600 mt-1">*Precio referencial sujeto a evaluación</p>
-            </div>
-          )}
           
           <motion.button
             onClick={() => window.close()}
@@ -454,9 +411,6 @@ const EnterpriseQuotePage: React.FC = () => {
                           </div>
                         </div>
                         <p className="text-sm text-gray-600 mb-2">{service.description}</p>
-                        <p className="text-sm font-medium text-blue-600">
-                          Desde {formatPrice(service.basePrice)}
-                        </p>
                       </motion.div>
                     ))}
                   </div>
@@ -560,60 +514,19 @@ const EnterpriseQuotePage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center space-x-2">
-                <Calculator className="h-5 w-5" />
-                <span>Estimación Preliminar</span>
-              </h3>
-
-              {estimatedQuote ? (
-                <div className="space-y-4">
-                  <div className="bg-blue-50 rounded-xl p-4">
-                    <div className="text-center">
-                      <p className="text-sm text-blue-700 mb-1">Costo mensual estimado:</p>
-                      <p className="text-3xl font-bold text-blue-600">{formatPrice(estimatedQuote)}</p>
-                      <p className="text-xs text-blue-600 mt-1">*Precio referencial</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-gray-900">Servicios Incluidos:</h4>
-                    {formData.serviceType.map(serviceId => {
-                      const service = serviceTypes.find(s => s.id === serviceId);
-                      return service ? (
-                        <div key={serviceId} className="flex justify-between items-center py-2 border-b border-gray-100">
-                          <span className="text-sm text-gray-700">{service.name}</span>
-                          <span className="text-sm font-medium text-gray-900">
-                            {formatPrice(service.basePrice)}
-                          </span>
-                        </div>
-                      ) : null;
-                    })}
-                    
-                    {formData.additionalServices.length > 0 && (
-                      <div className="pt-2">
-                        <h5 className="text-sm font-medium text-gray-700 mb-2">Servicios Adicionales:</h5>
-                        {formData.additionalServices.map(serviceId => {
-                          const service = additionalServices.find(s => s.id === serviceId);
-                          return service ? (
-                            <div key={serviceId} className="text-xs text-gray-600 mb-1">
-                              • {service.name}
-                            </div>
-                          ) : null;
-                        })}
-                      </div>
-                    )}
-                  </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Información de Cotización</h3>
+              
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calculator className="h-8 w-8 text-blue-600" />
                 </div>
-              ) : (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <DollarSign className="h-8 w-8 text-gray-400" />
-                  </div>
-                  <p className="text-gray-600">
-                    Completa la información para ver una estimación de costos
-                  </p>
-                </div>
-              )}
+                <p className="text-gray-600 mb-4">
+                  Completa el formulario para recibir una cotización personalizada
+                </p>
+                <p className="text-sm text-blue-600 font-medium">
+                  Precios competitivos y adaptados a tu empresa
+                </p>
+              </div>
 
               <div className="mt-6 space-y-4">
                 <div className="bg-green-50 rounded-xl p-4">
