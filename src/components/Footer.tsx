@@ -10,15 +10,15 @@ const Footer: React.FC = () => {
         { name: 'Productos', href: '#productos' },
         { name: 'Para Empresas', href: '#empresas' },
         { name: 'Nosotros', href: '#nosotros' },
-        { name: 'Preguntas Frecuentes', href: '#' }
+        { name: 'Preguntas Frecuentes', href: '/faq' }
       ]
     },
     {
       title: 'Legal',
       links: [
-        { name: 'Términos y Condiciones', href: '#' },
-        { name: 'Políticas de Privacidad', href: '#' },
-        { name: 'Bases de Promociones', href: '#' }
+        { name: 'Términos y Condiciones', href: '/terminos' },
+        { name: 'Políticas de Privacidad', href: '/privacidad' },
+        { name: 'Bases de Promociones', href: '/promociones' }
       ]
     }
   ];

@@ -19,6 +19,10 @@ import EnterpriseQuoteRouter from './components/EnterpriseQuoteRouter';
 import EnterpriseRouter from './components/EnterpriseRouter';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import PaymentReturnPage from './components/PaymentReturnPage';
+import TermsAndConditions from './components/TermsAndConditions';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import FAQ from './components/FAQ';
+import PromotionsPage from './components/PromotionsPage';
 
 function App() {
   // Check if we're on the payment page
@@ -38,6 +42,18 @@ function App() {
   
   // Check if we're on the payment return page
   const isPaymentReturnPage = window.location.pathname === '/payment-return';
+  
+  // Check if we're on the terms page
+  const isTermsPage = window.location.pathname === '/terminos';
+  
+  // Check if we're on the privacy page
+  const isPrivacyPage = window.location.pathname === '/privacidad';
+  
+  // Check if we're on the FAQ page
+  const isFAQPage = window.location.pathname === '/faq';
+  
+  // Check if we're on the promotions page
+  const isPromotionsPage = window.location.pathname === '/promociones';
   
   if (isPaymentPage) {
     return (
@@ -83,6 +99,34 @@ function App() {
     return (
       <AuthProvider>
         <PaymentReturnPage />
+      </AuthProvider>
+    );
+  }
+  
+  if (isTermsPage) {
+    return (
+      <AuthProvider>
+        <TermsAndConditions />
+      </AuthProvider>
+    );
+  }
+  
+  if (isPrivacyPage) {
+    return (
+      <AuthProvider>
+        <PrivacyPolicy />
+      </AuthProvider>
+    );
+  }
+  
+  if (isFAQPage) {
+    return <FAQ />;
+  }
+  
+  if (isPromotionsPage) {
+    return (
+      <AuthProvider>
+        <PromotionsPage />
       </AuthProvider>
     );
   }
