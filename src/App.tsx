@@ -12,6 +12,7 @@ import ForCompanies from './components/ForCompanies';
 import MapSection from './components/MapSection';
 import Footer from './components/Footer';
 import CartSidebar from './components/CartSidebar';
+import ContactSection from './components/ContactSection';
 import PaymentRouter from './components/PaymentRouter';
 import ConfigurationRouter from './components/ConfigurationRouter';
 import EnterpriseQuoteRouter from './components/EnterpriseQuoteRouter';
@@ -100,6 +101,7 @@ function App() {
             <AboutSection />
             <ForCompanies />
             <MapSection />
+            <ContactSection />
           </main>
           <Footer />
           <CartSidebar />
