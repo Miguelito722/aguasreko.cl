@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           onError={(e) => {
-            e.currentTarget.src = '/image.png';
+            e.currentTarget.src = '/images/general/placeholder.png';
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

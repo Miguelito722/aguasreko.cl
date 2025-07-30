@@ -80,7 +80,7 @@ const ConfigurationPage: React.FC = () => {
       name: 'Nuevo Producto',
       price: 0,
       description: 'Descripción del nuevo producto',
-      image: '/image.png',
+      image: '/images/general/placeholder.png',
       category: 'bidon'
     };
     
@@ -374,7 +374,7 @@ const ProductPreview: React.FC<{
               value={newImageUrl}
               onChange={(e) => setNewImageUrl(e.target.value)}
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://ejemplo.com/imagen.jpg"
+              placeholder="/images/products/nombre-producto.jpg"
               required
             />
             <motion.button
@@ -536,7 +536,7 @@ const ProductEditor: React.FC<{
             alt="Vista previa"
             className="w-full h-48 object-cover rounded-xl"
             onError={(e) => {
-              e.currentTarget.src = '/image.png';
+              e.currentTarget.src = '/images/general/placeholder.png';
             }}
           />
         </div>
