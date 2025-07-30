@@ -22,7 +22,7 @@ export const products: Product[] = [
     name: 'Pack 12 Botellas 500ml',
     price: 0,
     description: 'La dosis perfecta de hidratación para llevar al trabajo o al gimnasio. ¡Lleva la pureza Reko contigo!',
-    image: '/images/products/pack-botellas-500ml.jpg',
+    image: '/images/products/pack-12-botellas-500ml.jpg',
     category: 'botellas'
   },
   {
@@ -30,7 +30,7 @@ export const products: Product[] = [
     name: 'Bidón 20L Premium',
     price: 0,
     description: 'Bidón de agua purificada de calidad premium. Ideal para oficinas y hogares que buscan la máxima pureza.',
-    image: '/images/products/bidon-premium-20l.jpg',
+    image: '/images/products/bidon-20l-premium.jpg',
     category: 'bidon'
   },
   {

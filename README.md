@@ -5,13 +5,12 @@
 ### `/public/images/`
 
 #### `products/` - Imágenes de productos
-- `bidon-retornable-20l.jpg` - Bidón retornable principal
-- `dispensador-electrico.jpg` - Dispensador eléctrico con agua fría/caliente
-- `pack-botellas-500ml.jpg` - Pack de 12 botellas de 500ml
-- `bidon-premium-20l.jpg` - Bidón premium de 20L
-- `dispensador-compacto.jpg` - Dispensador compacto
-- `bidon-familiar-20l.jpg` - Bidón familiar de 20L
-- `producto-extra.jpg` - Producto adicional
+- `bidon-retornable-20l.jpg` - Bidón Retornable 20L
+- `dispensador-electrico.jpg` - Dispensador Eléctrico
+- `pack-12-botellas-500ml.jpg` - Pack 12 Botellas 500ml
+- `bidon-20l-premium.jpg` - Bidón 20L Premium
+- `dispensador-compacto.jpg` - Dispensador Compacto
+- `bidon-familiar-20l.jpg` - Bidón Familiar 20L
 
 #### `hero/` - Imágenes principales
 - `familia-brindando.png` - Imagen principal del hero (familia brindando)
