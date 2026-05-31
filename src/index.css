@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import theme variables */
-@import './styles/theme.css';
-
 /* Apply theme-aware styles to body */
 body {
   background-color: rgb(var(--color-background));
@@ -16,7 +13,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar for dark mode */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }

@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer id="contacto" className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-900 dark:to-black text-white">
+    <footer id="contacto" className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand Section */}
@@ -57,11 +57,11 @@ const Footer: React.FC = () => {
                 Aguas Reko
               </span>
             </div>
-            
-            <p className="text-gray-300 dark:text-gray-400 mb-6 leading-relaxed">
+
+            <p className="text-gray-300 mb-6 leading-relaxed">
               Somos una empresa del sur de Chile dedicada a llevar agua purificada de la más alta calidad y sabor a tu hogar y lugar de trabajo.
             </p>
-            
+
             <div className="flex space-x-4">
               {socialLinks.map((social, index) => (
                 <motion.a
@@ -69,7 +69,7 @@ const Footer: React.FC = () => {
                   href={social.href}
                   target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className={`w-10 h-10 bg-gray-700 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-300 transition-all duration-300 hover:text-blue-400`}
+                  className={`w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-gray-400 transition-all duration-300 hover:text-blue-400`}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -88,13 +88,13 @@ const Footer: React.FC = () => {
               transition={{ duration: 0.6, delay: (index + 1) * 0.1 }}
               viewport={{ once: true }}
             >
-              <h4 className="text-xl font-bold mb-6 text-white dark:text-gray-100">{section.title}</h4>
+              <h4 className="text-xl font-bold mb-6 text-white">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <motion.a
                       href={link.href}
-                      className="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-gray-200 transition-colors duration-300 flex items-center group"
+                      className="text-gray-300 hover:text-white:text-gray-200 transition-colors duration-300 flex items-center group"
                       whileHover={{ x: 5 }}
                     >
                       <span className="w-0 h-0.5 bg-blue-400 group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-2"></span>
@@ -113,7 +113,7 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-xl font-bold mb-6 text-white dark:text-gray-100">Contacto</h4>
+            <h4 className="text-xl font-bold mb-6 text-white">Contacto</h4>
             <ul className="space-y-4">
               {contactInfo.map((info, index) => (
                 <li key={index} className="flex items-start space-x-3 text-text-secondary">
@@ -139,13 +139,13 @@ const Footer: React.FC = () => {
 
         {/* Bottom Section */}
         <motion.div
-          className="mt-16 pt-8 border-t border-gray-700 dark:border-gray-600 text-center"
+          className="mt-16 pt-8 border-t border-gray-700 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <p className="text-gray-400 dark:text-gray-500">
+          <p className="text-gray-400">
             &copy; 2025 Aguas Reko. Todos los derechos reservados.
           </p>
         </motion.div>
