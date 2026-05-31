@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Droplets } from 'lucide-react';
 
 interface LoginPageProps {
   onSwitchToRegister: () => void;
@@ -52,79 +53,104 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, onClos
 
   if (resetEmailSent) {
     return (
-      <div className="p-6 text-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Mail className="w-8 h-8 text-green-600" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Email Enviado
-        </h3>
-        <p className="text-gray-600 mb-4">
-          Hemos enviado un enlace para recuperar tu contraseña a {email}
-        </p>
-        <button
-          onClick={onClose}
-          className="text-blue-600 hover:text-blue-700 font-medium"
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 text-center"
         >
-          Cerrar
-        </button>
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Mail className="w-8 h-8 text-green-600" />
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            Email Enviado
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Hemos enviado un enlace para recuperar tu contraseña a <br /> <span className="font-medium">{email}</span>
+          </p>
+          <button
+            onClick={onClose}
+            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
+          >
+            Volver al inicio
+          </button>
+        </motion.div>
       </div>
     );
   }
 
   if (showResetPassword) {
     return (
-      <div className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Recuperar Contraseña
-        </h2>
-        <form onSubmit={handleResetPassword} className="space-y-4">
-          {error && (
-            <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="tu@email.com"
-              />
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8"
+        >
+          <div className="flex items-center gap-2 mb-8">
+            <Droplets className="w-6 h-6 text-blue-600" />
+            <h1 className="text-2xl font-bold text-gray-900">Aguas Reko</h1>
           </div>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {isLoading ? 'Enviando...' : 'Enviar Email'}
-            <ArrowRight className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowResetPassword(false)}
-            className="w-full text-gray-600 hover:text-gray-700 text-sm"
-          >
-            Volver al inicio de sesión
-          </button>
-        </form>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Recuperar Contraseña
+          </h2>
+          <form onSubmit={handleResetPassword} className="space-y-4">
+            {error && (
+              <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="tu@email.com"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {isLoading ? 'Enviando...' : 'Enviar Email'}
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowResetPassword(false)}
+              className="w-full text-gray-600 hover:text-gray-700 text-sm font-medium"
+            >
+              Volver al inicio de sesión
+            </button>
+          </form>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Iniciar Sesión
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8"
+      >
+        <div className="flex items-center gap-2 mb-8">
+          <Droplets className="w-6 h-6 text-blue-600" />
+          <h1 className="text-2xl font-bold text-gray-900">Aguas Reko</h1>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          Iniciar Sesión
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm">
             {error}
@@ -190,17 +216,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, onClos
           {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           <ArrowRight className="w-4 h-4" />
         </button>
-        <div className="text-center">
-          <span className="text-sm text-gray-600">¿No tienes cuenta? </span>
-          <button
-            type="button"
-            onClick={onSwitchToRegister}
-            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-          >
-            Regístrate aquí
-          </button>
-        </div>
-      </form>
+          <div className="text-center">
+            <span className="text-sm text-gray-600">¿No tienes cuenta? </span>
+            <button
+              type="button"
+              onClick={onSwitchToRegister}
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Regístrate aquí
+            </button>
+          </div>
+        </form>
+      </motion.div>
     </div>
   );
 };

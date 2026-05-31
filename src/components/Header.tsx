@@ -158,8 +158,8 @@ const Header: React.FC = () => {
                     <UserMenu />
                   ) : (
                     <div className="hidden md:flex items-center space-x-2">
-                      <motion.button
-                        onClick={() => openAuthModal('login')}
+                      <motion.a
+                        href="/login"
                         className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
                           isScrolled
                             ? 'text-gray-700 hover:bg-gray-100'
@@ -170,7 +170,7 @@ const Header: React.FC = () => {
                       >
                         <LogIn className="h-4 w-4" />
                         <span>Entrar</span>
-                      </motion.button>
+                      </motion.a>
                       
                       <motion.button
                         onClick={() => openAuthModal('register')}

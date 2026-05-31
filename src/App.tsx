@@ -24,6 +24,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import FAQ from './components/FAQ';
 import PromotionsPage from './components/PromotionsPage';
 import { VisitsDashboard } from './components/VisitsDashboard';
+import { LoginPage } from './components/LoginPage';
 
 function App() {
   // Check if we're on the payment page
@@ -58,6 +59,9 @@ function App() {
 
   // Check if we're on the visits page
   const isVisitsPage = window.location.pathname === '/visitas';
+
+  // Check if we're on the login page
+  const isLoginPage = window.location.pathname === '/login';
 
   if (isPaymentPage) {
     return (
@@ -139,6 +143,23 @@ function App() {
     return (
       <AuthProvider>
         <VisitsDashboard />
+      </AuthProvider>
+    );
+  }
+
+  if (isLoginPage) {
+    return (
+      <AuthProvider>
+        <div className="min-h-screen bg-white">
+          <Header />
+          <main className="pt-20">
+            <LoginPage
+              onSwitchToRegister={() => window.location.hash = '#register'}
+              onClose={() => window.location.href = '/'}
+            />
+          </main>
+          <Footer />
+        </div>
       </AuthProvider>
     );
   }
