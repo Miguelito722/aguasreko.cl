@@ -103,22 +103,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('La contraseña debe tener al menos 8 caracteres');
       }
 
+      console.log('Attempting registration for:', userData.email);
+
       const { data, error } = await supabase.auth.signUp({
-        email: userData.email,
+        email: userData.email.trim().toLowerCase(),
         password: userData.password,
         options: {
           data: {
             name: userData.name,
-            phone: userData.phone,
-            address: userData.address,
-            city: userData.city,
-            region: userData.region
+            phone: userData.phone || '',
+            address: userData.address || '',
+            city: userData.city || '',
+            region: userData.region || ''
           },
           emailRedirectTo: `${window.location.origin}/verify-email`
         }
       });
 
       if (error) {
+        console.error('Registration error:', error);
         if (error.message.includes('already registered')) {
           throw new Error('Este email ya está registrado');
         }
@@ -129,7 +132,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('Error al crear el usuario');
       }
 
+      console.log('Registration successful for user:', data.user.id);
+
+      // If email confirmation is disabled, the user will be automatically signed in
+      if (data.session) {
+        console.log('User automatically signed in');
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .maybeSingle();
+
+        const mappedUser = mapSupabaseUserToUser(data.user, profile);
+        setUser(mappedUser);
+      }
+
     } catch (error) {
+      console.error('Registration failed:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -140,35 +159,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
 
     try {
+      console.log('Attempting login for:', email);
+
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: email.trim().toLowerCase(),
         password
       });
 
       if (error) {
+        console.error('Login error:', error);
         if (error.message.includes('Invalid login credentials')) {
           throw new Error('Email o contraseña incorrectos');
+        }
+        if (error.message.includes('Email not confirmed')) {
+          throw new Error('Por favor verifica tu email antes de iniciar sesión');
         }
         throw new Error(error.message);
       }
 
       if (data.user) {
-        const { data: profile } = await supabase
+        console.log('Login successful for user:', data.user.id);
+
+        const { data: profile, error: profileError } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', data.user.id)
           .maybeSingle();
 
+        if (profileError) {
+          console.error('Error fetching profile:', profileError);
+        }
+
         const mappedUser = mapSupabaseUserToUser(data.user, profile);
         setUser(mappedUser);
 
-        await supabase.from('access_logs').insert({
-          user_id: data.user.id,
-          action: 'login',
-          resource: 'auth'
-        });
+        try {
+          await supabase.from('access_logs').insert({
+            user_id: data.user.id,
+            action: 'login',
+            resource: 'auth'
+          });
+        } catch (logError) {
+          console.error('Error logging access:', logError);
+        }
       }
     } catch (error) {
+      console.error('Login failed:', error);
       throw error;
     } finally {
       setIsLoading(false);
