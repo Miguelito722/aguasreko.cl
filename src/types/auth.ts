@@ -23,6 +23,7 @@ export interface AuthContextType {
   logout: () => Promise<void>;
   updateProfile: (userData: Partial<User>) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
 }
 
 export interface RegisterData {

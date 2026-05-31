@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, User, Phone, MapPin, Eye, EyeOff, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, Mail, Lock, User, Phone, MapPin, Eye, EyeOff, CheckCircle, AlertCircle, Chrome } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { RegisterData, LoginData } from '../types/auth';
 
@@ -18,7 +18,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 'l
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
-  const { login, register } = useAuth();
+  const { login, register, signInWithGoogle } = useAuth();
 
   const [loginData, setLoginData] = useState<LoginData>({
     email: '',
@@ -50,6 +50,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 'l
       }, 1500);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Error al iniciar sesión');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Error al iniciar sesión con Google');
     } finally {
       setIsLoading(false);
     }
@@ -220,6 +233,27 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 'l
                   ) : (
                     'Iniciar Sesión'
                   )}
+                </motion.button>
+
+                <div className="relative my-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">O continúa con</span>
+                  </div>
+                </div>
+
+                <motion.button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  disabled={isLoading}
+                  className="w-full bg-white text-gray-700 py-3 px-6 rounded-xl font-semibold border border-gray-300 hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                  whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                >
+                  <Chrome className="w-5 h-5 text-blue-600" />
+                  Google
                 </motion.button>
               </form>
             )}

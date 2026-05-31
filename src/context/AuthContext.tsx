@@ -261,6 +261,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (error) throw error;
   };
 
+  const signInWithGoogle = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/`
+        }
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Google sign in error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
@@ -269,7 +288,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     register,
     logout,
     updateProfile,
-    resetPassword
+    resetPassword,
+    signInWithGoogle
   };
 
   return (

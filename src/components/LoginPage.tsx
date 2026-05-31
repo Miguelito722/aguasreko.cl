@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Droplets } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Droplets, Chrome } from 'lucide-react';
 
 interface LoginPageProps {
   onSwitchToRegister: () => void;
@@ -9,13 +9,22 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, onClose }) => {
-  const { login, resetPassword, isLoading } = useAuth();
+  const { login, resetPassword, signInWithGoogle, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setError('');
+      await signInWithGoogle();
+    } catch (err: any) {
+      setError(err.message || 'Error al iniciar sesión con Google');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -216,16 +225,36 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, onClos
           {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           <ArrowRight className="w-4 h-4" />
         </button>
-          <div className="text-center">
-            <span className="text-sm text-gray-600">¿No tienes cuenta? </span>
-            <button
-              type="button"
-              onClick={onSwitchToRegister}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Regístrate aquí
-            </button>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
           </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">O continúa con</span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          disabled={isLoading}
+          className="w-full bg-white text-gray-700 py-2.5 rounded-lg font-medium border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition"
+        >
+          <Chrome className="w-5 h-5 text-blue-600" />
+          Iniciar sesión con Google
+        </button>
+
+        <div className="text-center mt-6">
+          <span className="text-sm text-gray-600">¿No tienes cuenta? </span>
+          <button
+            type="button"
+            onClick={onSwitchToRegister}
+            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          >
+            Regístrate aquí
+          </button>
+        </div>
         </form>
       </motion.div>
     </div>
