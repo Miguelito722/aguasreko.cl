@@ -89,8 +89,7 @@ const HowItWorks: React.FC = () => {
                   <step.icon className="h-10 w-10 text-white" />
                   <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-xl"></div>
                 </motion.div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
+
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{step.description}</p>
               </div>
