@@ -23,11 +23,12 @@ import TermsAndConditions from './components/TermsAndConditions';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import FAQ from './components/FAQ';
 import PromotionsPage from './components/PromotionsPage';
+import { VisitsDashboard } from './components/VisitsDashboard';
 
 function App() {
   // Check if we're on the payment page
   const isPaymentPage = window.location.pathname === '/payment' || window.location.hash === '#payment';
-  
+
   // Check if we're on the configuration page
   const isConfigurationPage = window.location.pathname === '/configuracion';
 
@@ -39,22 +40,25 @@ function App() {
 
   // Check if we're on the analytics page
   const isAnalyticsPage = window.location.pathname === '/analytics';
-  
+
   // Check if we're on the payment return page
   const isPaymentReturnPage = window.location.pathname === '/payment-return';
-  
+
   // Check if we're on the terms page
   const isTermsPage = window.location.pathname === '/terminos';
-  
+
   // Check if we're on the privacy page
   const isPrivacyPage = window.location.pathname === '/privacidad';
-  
+
   // Check if we're on the FAQ page
   const isFAQPage = window.location.pathname === '/faq';
-  
+
   // Check if we're on the promotions page
   const isPromotionsPage = window.location.pathname === '/promociones';
-  
+
+  // Check if we're on the visits page
+  const isVisitsPage = window.location.pathname === '/visitas';
+
   if (isPaymentPage) {
     return (
       <AuthProvider>
@@ -94,7 +98,7 @@ function App() {
       </AuthProvider>
     );
   }
-  
+
   if (isPaymentReturnPage) {
     return (
       <AuthProvider>
@@ -102,7 +106,7 @@ function App() {
       </AuthProvider>
     );
   }
-  
+
   if (isTermsPage) {
     return (
       <AuthProvider>
@@ -110,7 +114,7 @@ function App() {
       </AuthProvider>
     );
   }
-  
+
   if (isPrivacyPage) {
     return (
       <AuthProvider>
@@ -118,11 +122,11 @@ function App() {
       </AuthProvider>
     );
   }
-  
+
   if (isFAQPage) {
     return <FAQ />;
   }
-  
+
   if (isPromotionsPage) {
     return (
       <AuthProvider>
@@ -130,7 +134,15 @@ function App() {
       </AuthProvider>
     );
   }
-  
+
+  if (isVisitsPage) {
+    return (
+      <AuthProvider>
+        <VisitsDashboard />
+      </AuthProvider>
+    );
+  }
+
   return (
     <AuthProvider>
       <CartProvider>

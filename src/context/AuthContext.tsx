@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { AuthContextType, User, RegisterData } from '../types/auth';
-import { SecurityUtils } from '../utils/security';
+import { AuthContextType, User, RegisterData, UserRole } from '../types/auth';
+import { supabase } from '../lib/supabase';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -12,51 +13,88 @@ export const useAuth = () => {
   return context;
 };
 
+const mapSupabaseUserToUser = (supabaseUser: SupabaseUser, profile?: any): User | null => {
+  if (!supabaseUser) return null;
+
+  return {
+    id: supabaseUser.id,
+    email: supabaseUser.email || '',
+    name: profile?.name || supabaseUser.user_metadata?.name || '',
+    phone: profile?.phone || supabaseUser.user_metadata?.phone || '',
+    address: profile?.address || supabaseUser.user_metadata?.address || '',
+    city: profile?.city || supabaseUser.user_metadata?.city || '',
+    region: profile?.region || supabaseUser.user_metadata?.region || '',
+    role: profile?.role || 'user',
+    isVerified: profile?.is_verified || supabaseUser.email_confirmed_at !== null,
+    createdAt: profile?.created_at || supabaseUser.created_at,
+    updatedAt: profile?.updated_at || supabaseUser.updated_at || supabaseUser.created_at
+  };
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session on app load
-    const checkAuthStatus = () => {
+    let mounted = true;
+
+    const fetchUserProfile = async (userId: string) => {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching user profile:', error);
+        return null;
+      }
+
+      return data;
+    };
+
+    const initializeAuth = async () => {
       try {
-        const storedUser = localStorage.getItem('aguasreko_user');
-        const sessionToken = localStorage.getItem('aguasreko_session');
-        
-        if (storedUser && sessionToken) {
-          const userData = JSON.parse(storedUser);
-          const tokenData = JSON.parse(sessionToken);
-          
-          // Check if session is still valid (24 hours)
-          const now = new Date().getTime();
-          const sessionAge = now - tokenData.timestamp;
-          const maxAge = 24 * 60 * 60 * 1000; // 24 hours
-          
-          if (sessionAge < maxAge) {
-            setUser(userData);
-          } else {
-            // Session expired, clear storage
-            localStorage.removeItem('aguasreko_user');
-            localStorage.removeItem('aguasreko_session');
-          }
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (session?.user && mounted) {
+          const profile = await fetchUserProfile(session.user.id);
+          const mappedUser = mapSupabaseUserToUser(session.user, profile);
+          if (mounted) setUser(mappedUser);
         }
       } catch (error) {
-        console.error('Error checking auth status:', error);
-        localStorage.removeItem('aguasreko_user');
-        localStorage.removeItem('aguasreko_session');
+        console.error('Error initializing auth:', error);
       } finally {
-        setIsLoading(false);
+        if (mounted) setIsLoading(false);
       }
     };
 
-    checkAuthStatus();
+    initializeAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (!mounted) return;
+
+        if (event === 'SIGNED_IN' && session?.user) {
+          const profile = await fetchUserProfile(session.user.id);
+          const mappedUser = mapSupabaseUserToUser(session.user, profile);
+          setUser(mappedUser);
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+        }
+      }
+    );
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const register = async (userData: RegisterData): Promise<void> => {
     setIsLoading(true);
-    
+
     try {
-      // Validate input data
       if (userData.password !== userData.confirmPassword) {
         throw new Error('Las contraseñas no coinciden');
       }
@@ -65,45 +103,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('La contraseña debe tener al menos 8 caracteres');
       }
 
-      // Check if email already exists
-      const existingUsers = JSON.parse(localStorage.getItem('aguasreko_users') || '[]');
-      const emailExists = existingUsers.some((u: User) => u.email === userData.email);
-      
-      if (emailExists) {
-        throw new Error('Este email ya está registrado');
+      const { data, error } = await supabase.auth.signUp({
+        email: userData.email,
+        password: userData.password,
+        options: {
+          data: {
+            name: userData.name,
+            phone: userData.phone,
+            address: userData.address,
+            city: userData.city,
+            region: userData.region
+          },
+          emailRedirectTo: `${window.location.origin}/verify-email`
+        }
+      });
+
+      if (error) {
+        if (error.message.includes('already registered')) {
+          throw new Error('Este email ya está registrado');
+        }
+        throw new Error(error.message);
       }
 
-      // Create new user
-      const newUser: User = {
-        id: SecurityUtils.generateSecureToken(16),
-        email: userData.email,
-        name: userData.name,
-        phone: userData.phone,
-        address: userData.address,
-        city: userData.city,
-        region: userData.region,
-        createdAt: new Date().toISOString(),
-        isVerified: false
-      };
+      if (!data.user) {
+        throw new Error('Error al crear el usuario');
+      }
 
-      // Hash password and store user
-      const hashedPassword = SecurityUtils.hashPassword(userData.password);
-      const userWithPassword = { ...newUser, password: hashedPassword };
-      
-      existingUsers.push(userWithPassword);
-      localStorage.setItem('aguasreko_users', JSON.stringify(existingUsers));
-
-      // Create session
-      const sessionToken = {
-        userId: newUser.id,
-        timestamp: new Date().getTime(),
-        token: SecurityUtils.generateSecureToken(32)
-      };
-
-      localStorage.setItem('aguasreko_user', JSON.stringify(newUser));
-      localStorage.setItem('aguasreko_session', JSON.stringify(sessionToken));
-
-      setUser(newUser);
     } catch (error) {
       throw error;
     } finally {
@@ -113,34 +138,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
-    
+
     try {
-      const existingUsers = JSON.parse(localStorage.getItem('aguasreko_users') || '[]');
-      const user = existingUsers.find((u: any) => u.email === email);
-      
-      if (!user) {
-        throw new Error('Email o contraseña incorrectos');
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          throw new Error('Email o contraseña incorrectos');
+        }
+        throw new Error(error.message);
       }
 
-      // Verify password
-      const isValidPassword = SecurityUtils.verifyPassword(password, user.password);
-      if (!isValidPassword) {
-        throw new Error('Email o contraseña incorrectos');
+      if (data.user) {
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .maybeSingle();
+
+        const mappedUser = mapSupabaseUserToUser(data.user, profile);
+        setUser(mappedUser);
+
+        await supabase.from('access_logs').insert({
+          user_id: data.user.id,
+          action: 'login',
+          resource: 'auth'
+        });
       }
-
-      // Create session
-      const sessionToken = {
-        userId: user.id,
-        timestamp: new Date().getTime(),
-        token: SecurityUtils.generateSecureToken(32)
-      };
-
-      const { password: _, ...userWithoutPassword } = user;
-      
-      localStorage.setItem('aguasreko_user', JSON.stringify(userWithoutPassword));
-      localStorage.setItem('aguasreko_session', JSON.stringify(sessionToken));
-
-      setUser(userWithoutPassword);
     } catch (error) {
       throw error;
     } finally {
@@ -148,32 +175,54 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('aguasreko_user');
-    localStorage.removeItem('aguasreko_session');
-    setUser(null);
+  const logout = async (): Promise<void> => {
+    try {
+      if (user) {
+        await supabase.from('access_logs').insert({
+          user_id: user.id,
+          action: 'logout',
+          resource: 'auth'
+        });
+      }
+
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      setUser(null);
+    } catch (error) {
+      console.error('Error during logout:', error);
+      setUser(null);
+    }
   };
 
   const updateProfile = async (userData: Partial<User>): Promise<void> => {
     if (!user) throw new Error('No user logged in');
-    
+
     try {
-      const updatedUser = { ...user, ...userData };
-      
-      // Update in storage
-      const existingUsers = JSON.parse(localStorage.getItem('aguasreko_users') || '[]');
-      const userIndex = existingUsers.findIndex((u: any) => u.id === user.id);
-      
-      if (userIndex !== -1) {
-        existingUsers[userIndex] = { ...existingUsers[userIndex], ...userData };
-        localStorage.setItem('aguasreko_users', JSON.stringify(existingUsers));
-      }
-      
-      localStorage.setItem('aguasreko_user', JSON.stringify(updatedUser));
-      setUser(updatedUser);
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          name: userData.name,
+          phone: userData.phone,
+          address: userData.address,
+          city: userData.city,
+          region: userData.region
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      setUser({ ...user, ...userData });
     } catch (error) {
       throw error;
     }
+  };
+
+  const resetPassword = async (email: string): Promise<void> => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`
+    });
+
+    if (error) throw error;
   };
 
   const value: AuthContextType = {
@@ -183,7 +232,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     login,
     register,
     logout,
-    updateProfile
+    updateProfile,
+    resetPassword
   };
 
   return (

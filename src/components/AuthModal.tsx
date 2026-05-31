@@ -62,11 +62,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMode = 'l
 
     try {
       await register(registerData);
-      setSuccess('¡Cuenta creada exitosamente! Ya puedes realizar compras.');
+      setSuccess('¡Cuenta creada! Revisa tu email para verificar tu cuenta antes de iniciar sesión.');
       setTimeout(() => {
-        onClose();
         setSuccess('');
-      }, 2000);
+      }, 5000);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Error al crear la cuenta');
     } finally {

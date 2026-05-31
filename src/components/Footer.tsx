@@ -69,7 +69,6 @@ const Footer: React.FC = () => {
                   href={social.href}
                   target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className={`w-10 h-10 bg-surface-secondary rounded-full flex items-center justify-center text-text-tertiary transition-all duration-300 hover:text-primary`}
                   className={`w-10 h-10 bg-gray-700 dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-400 dark:text-gray-300 transition-all duration-300 hover:text-blue-400`}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.9 }}

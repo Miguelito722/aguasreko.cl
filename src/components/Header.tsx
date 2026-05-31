@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, X, ShoppingCart, Droplets, Eye, LogIn, UserPlus } from 'lucide-react';
+import { Menu, X, ShoppingCart, Droplets, Eye, LogIn, UserPlus, Calendar } from 'lucide-react';
 import { useCartContext } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import UserMenu from './UserMenu';
@@ -16,7 +16,9 @@ const Header: React.FC = () => {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   
   const { itemCount, setIsOpen } = useCartContext();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  const canAccessVisits = user?.role === 'admin' || user?.role === 'manager';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -120,21 +122,16 @@ const Header: React.FC = () => {
             <div className="flex items-center space-x-4">
               {/* Visit Counter */}
               <motion.div
-                className={`hidden md:flex items-center space-x-2 px-3 py-2 rounded-full transition-all duration-300 ${
-                  isScrolled 
-                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' 
-                    : 'bg-white/10 dark:bg-gray-800/30 backdrop-blur-sm text-white border border-white/20 dark:border-gray-600/30'
+                className={`hidden md:flex items-center space-x-2 px-3 py-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  isScrolled
+                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100'
+                    : 'bg-white/10 dark:bg-gray-800/30 backdrop-blur-sm text-white border border-white/20 dark:border-gray-600/30 hover:bg-white/20'
                 }`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
                 whileHover={{ scale: 1.05 }}
                 onClick={() => window.open('/analytics', '_blank')}
-                className={`hidden md:flex items-center space-x-2 px-3 py-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  isScrolled 
-                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100' 
-                    : 'bg-white/10 dark:bg-gray-800/30 backdrop-blur-sm text-white border border-white/20 dark:border-gray-600/30 hover:bg-white/20'
-                }`}
               >
                 <Eye className="h-4 w-4" />
                 <span className="text-sm font-medium">
@@ -144,6 +141,19 @@ const Header: React.FC = () => {
 
               {/* Theme Toggle */}
               <ThemeToggle />
+
+              {/* Visits Link for Admins/Managers */}
+              {canAccessVisits && (
+                <motion.a
+                  href="/visitas"
+                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl font-medium transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Calendar className="h-4 w-4" />
+                  <span>Visitas</span>
+                </motion.a>
+              )}
 
               {/* Auth Buttons or User Menu */}
               {!isLoading && (
