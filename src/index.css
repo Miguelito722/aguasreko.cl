@@ -2,10 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Apply theme-aware styles to body */
+:root {
+  --color-primary: 37 99 235;
+  --color-primary-dark: 29 78 216;
+  --color-primary-light: 96 165 250;
+  --color-secondary: 14 165 233;
+  --color-secondary-dark: 2 132 199;
+  --color-secondary-light: 56 189 248;
+  --color-accent: 16 185 129;
+  --color-accent-dark: 5 150 105;
+  --color-accent-light: 52 211 153;
+  --color-background: 255 255 255;
+  --color-background-secondary: 249 250 251;
+  --color-background-tertiary: 243 244 246;
+  --color-surface: 255 255 255;
+  --color-surface-secondary: 249 250 251;
+  --color-surface-tertiary: 243 244 246;
+  --color-text-primary: 17 24 39;
+  --color-text-secondary: 55 65 81;
+  --color-text-tertiary: 107 114 128;
+  --color-text-quaternary: 156 163 175;
+  --color-border: 229 231 235;
+  --color-border-secondary: 209 213 219;
+  --color-border-tertiary: 156 163 175;
+  --color-success: 16 185 129;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+  --color-info: 14 165 233;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --transition-fast: 150ms;
+  --transition-normal: 300ms;
+  --transition-slow: 500ms;
+}
+
 body {
-  background-color: rgb(var(--color-background));
-  color: rgb(var(--color-text-primary));
+  background-color: #ffffff;
+  color: #111827;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 /* Ensure smooth transitions */

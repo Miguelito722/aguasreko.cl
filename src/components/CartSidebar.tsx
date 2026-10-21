@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Minus, Trash2, ShoppingBag, CreditCard, Lock } from 'lucide-react';
+import { X, Plus, Minus, Trash2, ShoppingBag, CreditCard, Lock, LogIn } from 'lucide-react';
 import { useCartContext } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import AuthModal from './AuthModal';
 
 const CartSidebar: React.FC = () => {
   const { items, removeItem, updateQuantity, clearCart, total, isOpen, setIsOpen } = useCartContext();
   const { isAuthenticated } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const handleCheckout = () => {
     if (items.length > 0) {
       if (!isAuthenticated) {
-        // Show auth requirement message
-        alert('Debes iniciar sesión para realizar compras. Por favor, regístrate o inicia sesión desde el menú superior.');
+        setShowAuthModal(true);
         return;
       }
 
@@ -181,18 +182,18 @@ const CartSidebar: React.FC = () => {
                 <div className="space-y-3">
                   <motion.button
                     onClick={handleCheckout}
-                    className={`w-full py-4 px-6 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 ${
-                      isAuthenticated
-                        ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white'
-                        : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                    }`}
-                    whileHover={isAuthenticated ? { scale: 1.02 } : {}}
-                    whileTap={isAuthenticated ? { scale: 0.98 } : {}}
-                    disabled={!isAuthenticated}
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <span>
-                      {isAuthenticated ? 'Solicitar Cotización' : 'Inicia Sesión para Comprar'}
-                    </span>
+                    {isAuthenticated ? (
+                      <span>Solicitar Cotización</span>
+                    ) : (
+                      <>
+                        <LogIn className="h-5 w-5" />
+                        <span>Iniciar Sesión para Comprar</span>
+                      </>
+                    )}
                   </motion.button>
                   
                   <motion.button
@@ -209,6 +210,11 @@ const CartSidebar: React.FC = () => {
           </motion.div>
         </>
       )}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode="login"
+      />
     </AnimatePresence>
   );
 };
